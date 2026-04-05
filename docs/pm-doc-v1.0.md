@@ -7,7 +7,7 @@
 
 ## 1. Product Overview
 
-The **Workflow Platform** is a rule-driven, async message-processing and dispatch system targeted at enterprise applications (financial services, telecom, e-commerce) that need to enrich, evaluate, and route transactional messages to multiple downstream channels (SMS, Email, Push, etc.) without hardcoding logic per integration.
+The **Workflow Platform** is a rule-driven, async/sync processing and dispatch system targeted at enterprise applications (financial services, telecom, e-commerce) that need to enrich, evaluate, and route transactional messages to multiple downstream channels (SMS, Email, Push, etc.) without hardcoding logic per integration.
 
 **One-line value proposition**: Configure once in the UI, dispatch anywhere at runtime — with full audit trail and retry safety.
 
