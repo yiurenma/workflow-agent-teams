@@ -1,8 +1,10 @@
 # Architect Doc — Workflow Platform
-**Version**: 1.0  
+**Version**: 1.1  
 **Date**: 2026-04-05  
 **Status**: Draft — awaiting human approval  
 **Input**: PM Doc v1.2
+
+**Changes from v1.0**: All 4 architectural decisions resolved (AD-1 to AD-4); affected sections updated accordingly.
 
 ---
 
@@ -204,19 +206,21 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
   participant UI
-  participant ON as online-api
+  participant OP as operation-api
   participant DB as PostgreSQL
 
-  UI->>ON: GET /api/workflow/records?applicationName=APP<br/>&overallStatus=GI_FAIL&from=2026-04-01&to=2026-04-05<br/>&confirmationNumber=XYZ&page=0&size=20
-  ON->>DB: Query WORKFLOW_RECORD on indexed columns<br/>(applicationName, overallStatus, createdDateTime,<br/>transactionConfirmationNumber, trackingNumber, customerId)
-  DB-->>ON: Page of records (parent rows)
-  ON-->>UI: { content: [...], totalElements, page }
+  UI->>OP: GET /api/workflow/records?applicationName=APP<br/>&overallStatus=GI_FAIL&from=2026-04-01&to=2026-04-05<br/>&confirmationNumber=XYZ&page=0&size=20
+  OP->>DB: Query WORKFLOW_RECORD on indexed columns<br/>(applicationName, overallStatus, createdDateTime,<br/>transactionConfirmationNumber, trackingNumber, customerId)
+  DB-->>OP: Page of records (parent rows)
+  OP-->>UI: { content: [...], totalElements, page }
   UI->>UI: User clicks a row
-  UI->>ON: GET /api/workflow/records/{id}
-  ON->>DB: Load record + child records (originWorkflowRecordId = id)
-  ON-->>UI: Parent record + child records (MESSAGE children + retry chain)
+  UI->>OP: GET /api/workflow/records/{id}
+  OP->>DB: Load record + child records (originWorkflowRecordId = id)
+  OP-->>UI: Parent record + child records (MESSAGE children + retry chain)
   UI->>UI: Render detail view with hierarchy
 ```
+
+> **AD-2 decision**: Records endpoint lives on **operation-api** — single management plane base URL for all UI management features. operation-api reads `WORKFLOW_RECORD` (shared DB, read-only from operation-api side).
 
 ### 4.5 Application Delete (US-03 — revised behaviour)
 
@@ -229,7 +233,7 @@ sequenceDiagram
   UI->>UI: User clicks Delete → confirms modal
   UI->>OP: DELETE /api/workflow?applicationName=APP
   OP->>DB: Delete WorkflowEntitySetting cascade:<br/>→ WorkflowEntityAndLinkingIdMapping<br/>→ WorkflowRuleAndType<br/>→ WorkflowRule<br/>→ WorkflowType
-  Note over OP,DB: WORKFLOW_RECORD rows are NOT deleted<br/>(historical execution data retained as orphan records)
+  Note over OP,DB: WORKFLOW_RECORD rows are retained as orphan records<br/>(applicationName column preserved; historical data never deleted — AD-1)
   OP-->>UI: 200 OK
   UI->>UI: Remove row from application list
 ```
@@ -254,7 +258,7 @@ Request body (all fields optional — partial update):
   "defaultServiceAccount":            string,
   "trackingServiceProviderActionId":  string,
   "trackingServiceProviderActionId2": string,
-  "asyncMode":                        boolean,   // true = async, false = sync
+  "asyncMode":                        boolean,   // true = async, false = sync  (AD-4: boolean field)
   "retryProperties": {
     "retryErrorCodes": [string],
     "maxRetryTimes":   number
@@ -268,7 +272,9 @@ Response 400: WF-400-xxx validation errors
 
 > **Note**: This endpoint updates entity settings only. It does **not** touch the workflow definition (rules, types, step mappings). The existing `POST /api/workflow` continues to own the workflow definition exclusively.
 
-### 5.2 New Endpoint — List execution records (online-api)
+### 5.2 New Endpoint — List execution records (operation-api)
+
+> **AD-2**: Hosted on **operation-api**, not online-api. operation-api reads `WORKFLOW_RECORD` from the shared DB (read-only access).
 
 ```
 GET /api/workflow/records
@@ -313,8 +319,8 @@ DELETE /api/workflow?applicationName={name}
 Current behaviour: Returns WF-409-201 if WORKFLOW_RECORD rows exist.
 Target behaviour:  Always proceeds. Deletes WorkflowEntitySetting and all
                    associated workflow definition rows. WORKFLOW_RECORD rows
-                   are retained as orphan historical data (applicationName
-                   column preserved for reference).
+                   are retained as orphan historical data — applicationName
+                   column preserved for reference. (AD-1: Keep)
 ```
 
 ### 5.4 Existing Endpoints — No Change
@@ -353,7 +359,7 @@ CONSUMER, CONSUMERWITHOUTERROR, IFELSE, FUNCTION, FUNCTION_V2, FUNCTION_V3, DISP
 
 `WorkflowRuleAndTypeService` additions:
 - **CONSUMERWITHOUTERROR handler**: same HTTP call as CONSUMER; wrap execution in try/catch and swallow exception, logging the suppressed error
-- **FUNCTION_V3 handler**: implement alongside FUNCTION_V2; parameter handling details to be defined by Delivery Manager + engineer in implementation phase
+- **FUNCTION_V3 handler**: FUNCTION_V3 is architecturally a **different invocation style** from FUNCTION_V2, but the specific difference is deferred — implement identical to FUNCTION_V2 for now. A separate task to differentiate FUNCTION_V3 behaviour will be raised when the reference implementation is accessible. (AD-3)
 
 ---
 
@@ -367,7 +373,7 @@ All migrations owned by `workflow-operation-api` (Flyway/Liquibase or current co
 |---|--------|-------|------|
 | M-01 | Add `async_mode` boolean column (default `true`) | `WORKFLOW_ENTITY_SETTING` | Additive — safe |
 | M-02 | Ensure `WORKFLOW_TYPE.type` column accepts `CONSUMERWITHOUTERROR` and `FUNCTION_V3` values (varchar — no enum constraint at DB level, already flexible) | `WORKFLOW_TYPE` | Verify only — likely no change needed |
-| M-03 | Remove DB-level foreign key constraint or application-level check that prevents `DELETE` when `WORKFLOW_RECORD` rows exist | `WORKFLOW_ENTITY_SETTING` | Constraint removal — verify current schema |
+| M-03 | Remove application-level check (error `WF-409-201`) that prevents `DELETE` when `WORKFLOW_RECORD` rows exist. No DB cascade delete — `WORKFLOW_RECORD` rows are intentionally retained as orphan historical data. (AD-1: Keep) | `WORKFLOW_ENTITY_SETTING` (code change only) | Code removal — no schema change |
 | M-04 | Add index on `WORKFLOW_RECORD.origin_workflow_record_id` if not present (needed for child record lookup in US-19) | `WORKFLOW_RECORD` | Additive — safe |
 
 ### 7.2 No destructive migrations
@@ -379,16 +385,16 @@ All migrations owned by `workflow-operation-api` (Flyway/Liquibase or current co
 
 ---
 
-## 8. Architectural Decisions Required from You
+## 8. Architectural Decision Log
 
-Before this document is considered final baseline, please decide:
+All decisions resolved.
 
-| # | Decision | Options | Impact |
-|---|----------|---------|--------|
-| AD-1 | **WORKFLOW_RECORD orphan on delete**: when an application is deleted, should historical execution records be retained (orphan) or cascade-deleted? | A) Retain (orphan) — safer, preserves audit trail · B) Cascade delete — cleaner, loses history | Drives M-03 migration and DELETE endpoint contract |
-| AD-2 | **Execution records API ownership**: should `GET /api/workflow/records` live on online-api (owns the table) or operation-api (single management plane)? | A) online-api — keeps table ownership clean · B) operation-api — single base URL for UI management features | Drives which service the UI calls for US-19 |
-| AD-3 | **FUNCTION_V3 invocation model**: is FUNCTION_V3 a superset of FUNCTION_V2 (same reflection model, more parameter types) or a different invocation style (e.g. script engine, external call)? | A) Reflection superset · B) Different model | Determines implementation complexity; needed before backend engineer starts |
-| AD-4 | **async_mode field name**: should the entity setting field be named `asyncMode` (boolean) or a more explicit enum (`ASYNC` / `SYNC`)? | A) boolean `asyncMode` · B) enum `executionMode` | Minor — affects API contract and DB column |
+| # | Decision | Resolution |
+|---|----------|------------|
+| AD-1 | WORKFLOW_RECORD on application delete | **Keep (orphan)** — historical execution records are never deleted; `applicationName` column preserved for reference |
+| AD-2 | Execution records API ownership | **operation-api** — single management plane base URL; operation-api reads `WORKFLOW_RECORD` from shared DB |
+| AD-3 | FUNCTION_V3 invocation model | **Different style from FUNCTION_V2** (details TBD when reference code is accessible); implement identical to FUNCTION_V2 for now and differentiate in a follow-up task |
+| AD-4 | async/sync field name | **boolean `asyncMode`** — `true` = async, `false` = sync |
 
 ---
 
