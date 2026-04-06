@@ -3,7 +3,7 @@
 **Label**: `TODO-postmortem-explain-github-gho-token-validation`  
 **Version**: 1.0  
 **Date**: 2026-04-06  
-**Status**: Draft — awaiting human approval  
+**Status**: Approved  
 **Input**: PM Doc postmortem-gho-token v1.0 + Arch Doc postmortem-gho-token v1.0
 
 ---

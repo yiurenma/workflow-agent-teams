@@ -3,7 +3,7 @@
 **Label**: `TODO-postmortem-explain-github-oauth-cors-uat`  
 **Version**: 1.0  
 **Date**: 2026-04-06  
-**Status**: Draft — awaiting human approval  
+**Status**: Approved  
 **Scope**: Post-mortem write-up + process improvements (no new feature code)
 
 ---

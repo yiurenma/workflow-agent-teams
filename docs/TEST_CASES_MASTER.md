@@ -1,6 +1,6 @@
 # Workflow System — Master Test Case Tracker
 
-**Last updated:** 2026-04-06  
+**Last updated:** 2026-04-06 (rev 2 — added TC-AUTH-*, TC-CORS-*, UAT rules)  
 **Environment:** Local (macOS, JDK 21, Node 20)  
 **Services:**
 - `workflow-operation-api` — port 8080 (Spring Boot 4.0.3)
@@ -33,8 +33,10 @@
 | TC-UI20 Canvas Overhaul v2.0 | 20 | 20 | — | — |
 | TC-UI21 Design Overhaul v2.1 | 20 | 20 | — | — |
 | TC-UI22 Mobile Responsive v2.2 | 25 | 25 | — | — |
+| TC-AUTH Token Validation | 7 | — | — | — |
+| TC-CORS Same-Origin Proxy | 5 | — | — | — |
 | **Unit Tests** | **117** | **117** | **—** | **—** |
-| **TOTAL** | **226** | **225** | **—** | **1** |
+| **TOTAL** | **238** | **225** | **—** | **1** |
 
 ---
 
@@ -378,6 +380,72 @@ Last run: `mvn test` — BUILD SUCCESS
 **Defects:** None.
 
 **Verdict: READY — all 25 checks pass; no defects found. Desktop layout fully preserved.**
+
+---
+
+---
+
+## TC-AUTH: GitHub Token Validation — Post-mortem gho_ fix
+
+**Background:** After US-21 (Device Flow), `gho_` tokens were rejected by `callAI` despite passing `isValidToken`. Fix shipped in commit 263b483. These cases guard against recurrence.
+
+| TC-ID | Scenario | Precondition | Expected result | Priority |
+|-------|----------|-------------|-----------------|----------|
+| TC-AUTH-10 | Device Flow `gho_` token accepted by Explain | `localStorage ai_explain_token = gho_XXXX` | Routes to GitHub Models path; NO "Unrecognised token format" error | P1 |
+| TC-AUTH-11 | `gho_` token not rejected at validation gate | `localStorage ai_explain_token = gho_XXXX` | Device Flow modal does NOT open; Explain proceeds immediately | P1 |
+| TC-AUTH-12 | Classic PAT `ghp_` still accepted (regression guard) | `ai_explain_token = ghp_XXXX` | Routes to GitHub Models; no error | P2 |
+| TC-AUTH-13 | Fine-grained PAT `github_pat_` accepted (regression guard) | `ai_explain_token = github_pat_XXXX` | Routes to GitHub Models; no error | P2 |
+| TC-AUTH-14 | Anthropic key `sk-ant-` accepted (regression guard) | `ai_explain_token = sk-ant-XXXX` | Routes to Anthropic path; no error | P2 |
+| TC-AUTH-15 | Unrecognised prefix rejected (negative test) | `ai_explain_token = xyz_XXXX` | `isValidToken` returns false; user prompted; `callAI` NOT called | P2 |
+| TC-AUTH-16 | E2E Device Flow → `gho_` → Explain succeeds | No token stored; GitHub OAuth App registered | Token received, stored, Explain runs; no "Unrecognised token" error at any step | P1 |
+
+**Auth Feature Test Planning Checklist (Test Manager):**
+- [ ] Define a test matrix row for **every** token type the feature accepts (positive cases).
+- [ ] Define at least one **negative** row: an unrecognised token type that must be rejected.
+- [ ] If Device Flow or OAuth is involved: include an E2E test (TC-AUTH-16 pattern).
+- [ ] Confirm that ALL code sites performing token-type detection are listed in test scope.
+
+**Auth PR Code Review Checklist:**
+- [ ] Token-type detection done in **one shared helper** (`isValidToken`)? If not, flag for consolidation.
+- [ ] PR test suite covers all accepted token prefixes and at least one rejected prefix?
+- [ ] New token prefix reflected in **all** consumers (validation gate + routing) in the same PR?
+
+---
+
+## TC-CORS: Same-Origin Proxy — Post-mortem CORS/OAuth fix
+
+**Background:** US-21 Device Flow initially fetched `github.com` directly from the browser, causing CORS errors in Vercel. Fix: all Device Flow calls now go through `/api/proxy/github/…` (same-origin proxy). These cases guard against recurrence.
+
+| TC-ID | Scenario | Environment | Expected result | Priority |
+|-------|----------|------------|-----------------|----------|
+| TC-CORS-01 | Device code request succeeds in real browser on Vercel | Vercel preview URL | Network tab shows `/api/proxy/github/…` path; no CORS error in console | P1 |
+| TC-CORS-02 | Polling request succeeds in real browser on Vercel | Vercel preview URL | Polling requests go to same-origin proxy; no CORS error | P1 |
+| TC-CORS-03 | Browser does NOT call `github.com` directly (negative) | Vercel preview URL | Filter Network tab for `github.com` → zero direct requests | P1 |
+| TC-CORS-04 | E2E on Vercel: Device Flow → token → Explain | Vercel preview URL | Full flow completes; no CORS errors at any step | P1 |
+| TC-CORS-05 | Proxy rejects missing `client_id` (security) | POST `/api/proxy/github/login/device/code` with no `client_id` | 400 Bad Request; proxy does not forward to GitHub | P2 |
+
+---
+
+## UAT Rule — Cross-Origin Fetch Features (Standing Rule)
+
+> For any feature involving `fetch` from the browser SPA to a third-party host, the following must be completed **before** Test Manager sign-off:
+>
+> 1. **Staging URL required:** Delivery Manager provides a Vercel preview URL (or equivalent) to Test Manager during test planning — before acceptance testing begins.
+> 2. **Real-browser acceptance:** Test Manager runs acceptance tests in a real browser on the Vercel preview URL, not `localhost` or mock environments.
+> 3. **Network tab verification:**
+>    - [ ] DevTools → Network tab open during full acceptance run.
+>    - [ ] Third-party API calls appear as **same-origin proxy paths** (not the third-party host directly).
+>    - [ ] No `Access to fetch at '...' from origin '...' has been blocked by CORS policy` in browser console.
+>    - [ ] Vercel function logs confirm the proxy received and forwarded the request.
+>    - [ ] Test environment is **Vercel preview URL** (or production-equivalent), NOT `localhost` / `vite dev`.
+> 4. **Sign-off blocked** if any of the above checks fail.
+
+**Test Manager Planning Checklist — Cross-Origin Features:**
+- [ ] Identify all `fetch` / `axios` calls to non-same-origin hosts.
+- [ ] Confirm a same-origin proxy is planned (Vercel function / backend route).
+- [ ] Request Vercel preview URL from Delivery Manager before writing test cases.
+- [ ] Add TC-CORS-01 / TC-CORS-03 equivalent tests to the feature test doc.
+- [ ] Include the network-tab checklist in QA sign-off.
 
 ---
 

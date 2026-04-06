@@ -3,7 +3,7 @@
 **Label**: `TODO-postmortem-explain-github-gho-token-validation`  
 **Version**: 1.0  
 **Date**: 2026-04-06  
-**Status**: Draft — awaiting human approval  
+**Status**: Approved  
 **Scope**: Post-mortem write-up + process improvements (no new feature code)  
 **Reference**: [yiurenma/workflow#10](https://github.com/yiurenma/workflow/pull/10), [workflow-ui@263b483](https://github.com/yiurenma/workflow-ui/commit/263b483c0b29671d947add279957b791644cedec)
 

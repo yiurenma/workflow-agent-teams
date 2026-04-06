@@ -3,7 +3,7 @@
 **Label**: `TODO-artboard-node-editor-3panel-json-format`  
 **Version**: 3.0  
 **Date**: 2026-04-06  
-**Status**: Draft — awaiting human approval  
+**Status**: Approved  
 **Input**: PM Doc v3.0 (US-30)
 
 ---
