@@ -3,7 +3,7 @@
 **Label**: `TODO-node-editor-cross-audience-clarity`  
 **Version**: 4.0  
 **Date**: 2026-04-06  
-**Status**: Draft — awaiting human approval  
+**Status**: Approved  
 **Input**: PM Doc v4.0 (US-31)
 
 ---
