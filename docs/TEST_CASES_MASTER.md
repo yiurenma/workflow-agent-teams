@@ -32,8 +32,9 @@
 | TC-ANZ All-Plugin E2E | 7 | 6 | — | 1 |
 | TC-UI20 Canvas Overhaul v2.0 | 20 | 20 | — | — |
 | TC-UI21 Design Overhaul v2.1 | 20 | 20 | — | — |
+| TC-UI22 Mobile Responsive v2.2 | 25 | 25 | — | — |
 | **Unit Tests** | **117** | **117** | **—** | **—** |
-| **TOTAL** | **201** | **200** | **—** | **1** |
+| **TOTAL** | **226** | **225** | **—** | **1** |
 
 ---
 
@@ -338,6 +339,45 @@ Last run: `mvn test` — BUILD SUCCESS
 **Defects:** None.
 
 **Verdict: READY — all 20 checks pass; no defects found.**
+
+---
+
+## TC-UI22: Mobile Responsive Adaptation v2.2 — commit 1f5dd40
+
+**Scope:** Full mobile responsive adaptation — all list pages, canvas, drawer, header  
+**Date:** 2026-04-06  Build: 1f5dd40
+
+| TC-ID | Description | Layer | Expected | Result | Notes |
+|-------|-------------|-------|----------|--------|-------|
+| TC-UI22-01 | `npx tsc -p tsconfig.app.json --noEmit` | UI | 0 errors | ✅ PASS | Clean exit |
+| TC-UI22-02 | `npm run lint` | UI | 0 errors | ✅ PASS | 0 errors; 1 pre-existing warning |
+| TC-UI22-03 | `npm run build` | UI | Exits 0 | ✅ PASS | 19.83 s; chunk-size advisory only |
+| TC-UI22-04 | `useIsMobile` hook created | Source | `/src/hooks/useIsMobile.ts` exists | ✅ PASS | resize listener, SSR-safe initializer |
+| TC-UI22-05 | `useIsMobile` used in 7 consumer files | Source | Grep returns 7 files | ✅ PASS | All target files import the hook |
+| TC-UI22-06 | Workflows list — mobile card view | Source | Card stack when `isMobile` | ✅ PASS | Table preserved on desktop |
+| TC-UI22-07 | Workflows list — floating `+` FAB on mobile | Source | `fixed bottom-6 right-6 z-50` | ✅ PASS | Desktop uses inline button |
+| TC-UI22-08 | Records list — mobile card view | Source | Card stack with tag, date | ✅ PASS | |
+| TC-UI22-09 | Records list — compact filters on mobile | Source | Secondary filters hidden | ✅ PASS | App + Status filters kept |
+| TC-UI22-10 | Record detail — single-column on mobile | Source | `column={isMobile ? 1 : 2}` | ✅ PASS | |
+| TC-UI22-11 | Record detail — child table horizontal scroll | Source | `scroll={{ x: 600 }}` on mobile | ✅ PASS | |
+| TC-UI22-12 | Canvas — sidebar hidden on mobile | Source | `{!isMobile && <WorkflowSider/>}` | ✅ PASS | Fully unmounted, not just hidden |
+| TC-UI22-13 | `MobileAddNodeSheet` component created | Source | File exists in canvas dir | ✅ PASS | Lives inside ReactFlow tree |
+| TC-UI22-14 | Bottom sheet with plugin grid | Source | `Drawer placement="bottom"` + grid | ✅ PASS | 3-col grid, all 6 plugins |
+| TC-UI22-15 | `addNodeAtCenter` uses `useReactFlow()` | Source | `screenToFlowPosition` called | ✅ PASS | Canvas center at `w/2, h/2` |
+| TC-UI22-16 | Floating `+` button bottom-left | Source | `fixed bottom-20 left-4 z-50` | ✅ PASS | |
+| TC-UI22-17 | WorkflowDrawer full-width on mobile | Source | `width={isMobile ? "100%" : 420}` | ✅ PASS | |
+| TC-UI22-18 | ReactFlow `panOnDrag` + `minZoom` set | Source | `panOnDrag={true}`, `minZoom={0.3}` | ✅ PASS | |
+| TC-UI22-19 | MiniMap hidden — component | Source | `{!isMobile && <MiniMap />}` | ✅ PASS | |
+| TC-UI22-20 | MiniMap hidden — CSS | Source | Media query in `index.css` | ✅ PASS | Double-guarded |
+| TC-UI22-21 | Controls touch target 36px | Source | Media query in `index.css` | ✅ PASS | |
+| TC-UI22-22 | Global header compact on mobile | Source | Brand name hidden on `<sm` | ✅ PASS | Menu items remain |
+| TC-UI22-23 | Desktop layout unchanged | Source | All `isMobile` guards preserved | ✅ PASS | |
+| TC-UI22-24 | No API / data model changes | Source | Only layout changes | ✅ PASS | All hooks/API calls identical |
+| TC-UI22-25 | `git push` success | Git | Commit `1f5dd40` on `origin/main` | ✅ PASS | |
+
+**Defects:** None.
+
+**Verdict: READY — all 25 checks pass; no defects found. Desktop layout fully preserved.**
 
 ---
 
