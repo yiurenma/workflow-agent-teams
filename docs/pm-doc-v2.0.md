@@ -2,7 +2,7 @@
 
 **Version**: 2.0  
 **Date**: 2026-04-06  
-**Status**: Draft  
+**Status**: Approved  
 **Scope**: workflow-ui only — no backend changes required  
 **Input**: TODO.md item "Explain: no GitHub token → send user to GitHub to authorize"
 

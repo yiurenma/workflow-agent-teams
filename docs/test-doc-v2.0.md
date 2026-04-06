@@ -2,7 +2,7 @@
 
 **Version**: 2.0  
 **Date**: 2026-04-06  
-**Status**: Draft  
+**Status**: Approved  
 **Input**: PM Doc v2.0 (US-21) + Arch Doc v2.0  
 **Scope**: workflow-ui — `useGitHubDeviceFlow` hook + `WorkflowHeader` component
 
