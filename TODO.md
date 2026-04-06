@@ -4,7 +4,27 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 ## Open
 
-_(nothing pending)_
+- [ ] **Explain: no GitHub token → send user to GitHub to authorize**
+
+  **Purpose**  
+  When the user clicks **Explain** and the app has **no valid GitHub token** (or none stored), the flow should **open GitHub’s OAuth authorization** so the user can grant access, then return and run Explain with a stored token—instead of failing silently or showing a dead end.
+
+  **Details (implementation outline)**  
+  - **Trigger**: Explain (or “use GitHub Models”) path detects missing/invalid token in whatever store the UI uses today (currently `localStorage` per shipped Explain work).  
+  - **OAuth**: Register a **GitHub OAuth App** or **GitHub App** with correct **callback / redirect URIs** for each environment (local, staging, prod).  
+  - **Flow**: Build authorize URL with `client_id`, requested **scopes**, `redirect_uri`, and **`state`** (CSRF). On callback, exchange code for token per your architecture (prefer **PKCE** for public clients; avoid putting **client secret** in the browser—use a small backend if you need secret exchange).  
+  - **After auth**: Persist token securely, resume **Explain** (same intent as before login—e.g. stash “pending explain” or deep link).  
+  - **Codebase**: Likely `workflow-ui` (e.g. `workflow-header` / Explain modal); exact files to align with current Explain implementation.
+
+  **Problems / risks (track here)**  
+  - **Security**: `localStorage` for tokens is weak to XSS; stronger options (httpOnly cookie via backend, or platform secret storage) should be decided for production.  
+  - **UX**: Pop-up blockers if authorization opens in a new window without a direct user gesture; prefer same-tab navigation or explicit “Connect GitHub” if needed.  
+  - **Enterprise**: GitHub Enterprise Server uses different host URLs and app registration.  
+  - **Org policies**: OAuth app may require **org admin approval** (SSO / restricted OAuth apps).  
+  - **Submodule pin**: Parent `workflow` repo may pin `workflow-agent-teams` to an older commit without `TODO.md`; bump submodule after this lands so others see the file.
+
+  **Coordination**  
+  Product / sequencing: **Shuang Xia Wen** (confirm scope, OAuth app ownership, and env redirect URLs before implementation).
 
 ## Done
 
