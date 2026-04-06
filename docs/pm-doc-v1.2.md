@@ -2,7 +2,7 @@
 
 **Version**: 1.2  
 **Date**: 2026-04-05  
-**Status**: Draft — awaiting human approval
+**Status**: Approved
 
 **Changes from v1.1**:
 
@@ -435,3 +435,45 @@ These steps express conditional branching or internal function execution. They u
 ---
 
 *End of PM Doc v1.1 — please review and confirm before this is handed to the Delivery Manager.*
+
+---
+
+## Canvas AI Explainer (v1.3 addendum)
+
+**Date**: 2026-04-06  
+**Status**: Implemented — pending PM sign-off
+
+This section documents the Canvas AI Explainer feature added to the workflow editor header. It is appended as an addendum to v1.2 and does not alter any prior acceptance criteria.
+
+---
+
+### 3.5 Canvas AI Explainer
+
+#### US-20 — Explain the current workflow using AI
+
+> As an integration engineer, I want to click an "Explain" button in the canvas header so I can get a plain-language summary of the current workflow's steps, rules, and logic without having to read raw JSON configuration.
+
+**Acceptance criteria**:
+
+- AC-20-1: An **Explain** button is present in the workflow canvas header, positioned to the left of the existing **Run** button.
+- AC-20-2: On first click (or whenever no AI token is stored), the user is prompted to supply a personal AI token before any API call is made. Accepted token formats are:
+  - Anthropic Claude API key (`sk-ant-…`)
+  - GitHub Models token (`ghp_…`, `ghu_…`, or `ghs_…`)
+- AC-20-3: The supplied token is stored in the browser's `localStorage` under the key `ai_explain_token`. It is **never** transmitted to the platform's own backend services (`workflow-operation-api` or `workflow-online-api`).
+- AC-20-4: Once a valid token is present, clicking Explain reads the current workflow's `pluginList` from canvas state — capturing, for each step: `type`, `description`, `rules`, `linkingId`, and `URL` — and assembles a structured prompt describing the workflow.
+- AC-20-5: The prompt is sent directly from the browser to the appropriate AI backend:
+  - **Anthropic token** → Anthropic Claude API (`api.anthropic.com`)
+  - **GitHub token** → GitHub Models Azure inference endpoint
+- AC-20-6: The AI-generated explanation is displayed in a modal dialog. The modal renders the response as formatted text.
+- AC-20-7: The modal footer includes a **Clear token** action that removes `ai_explain_token` from `localStorage`. After clearing, the next Explain click re-triggers the token prompt (AC-20-2).
+- AC-20-8: If the AI API call fails (network error, invalid token, rate limit), a clear error message is shown inside the modal; no crash or unhandled exception occurs.
+- AC-20-9: The Explain feature operates entirely client-side. No workflow data or AI token leaves the browser except via the direct call to the chosen AI API endpoint.
+
+**Out of scope for this feature**:
+
+- Persisting or syncing the AI token across devices or users — `localStorage` is per-browser only.
+- Server-side proxying of AI API requests.
+- Saving or exporting the generated explanation.
+- Streaming / typewriter rendering of the AI response.
+- Support for AI providers beyond Anthropic Claude and GitHub Models.
+- Role-based gating — the Explain button is visible to all users with access to the canvas editor.

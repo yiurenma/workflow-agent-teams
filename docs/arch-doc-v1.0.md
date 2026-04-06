@@ -1,7 +1,7 @@
 # Architect Doc — Workflow Platform
 **Version**: 1.1  
 **Date**: 2026-04-05  
-**Status**: Draft — awaiting human approval  
+**Status**: Approved  
 **Input**: PM Doc v1.2
 
 **Changes from v1.0**: All 4 architectural decisions resolved (AD-1 to AD-4); affected sections updated accordingly.
@@ -417,3 +417,105 @@ Instead of adding a new read endpoint to online-api (AD-2 option B), expose `WOR
 ---
 
 *End of Architect Doc v1.0 — awaiting your decisions on AD-1 through AD-4 and overall approval before handoff to Delivery Manager.*
+
+---
+
+## Canvas AI Explainer — Architecture Note (v1.1 addendum)
+
+**Date**: 2026-04-06  
+**Status**: Implemented — no approval gate required (pure frontend, no backend changes)  
+**Scope**: workflow-ui only
+
+### A.1 Feature Summary
+
+An "Explain" button added to the workflow canvas header (`workflow-header`) that sends the current workflow's plugin list to an external AI API and streams a plain-language explanation back to the user. No backend services were modified; no new API endpoints were introduced.
+
+**File changed**: `workflow-ui/src/routes/workflows/-components/workflow-header/index.tsx`
+
+### A.2 Data Flow
+
+```mermaid
+sequenceDiagram
+  participant U as User (Browser)
+  participant LS as localStorage
+  participant H as WorkflowHeader component
+  participant ANT as Anthropic API<br/>(api.anthropic.com)
+  participant GH as GitHub Models API<br/>(models.inference.ai.azure.com)
+
+  U->>H: Clicks "Explain" button
+  H->>LS: Read ai_explain_token
+  H->>H: Detect token type by prefix<br/>(sk-ant-* → Anthropic, ghp_/ghu_/ghs_* → GitHub)
+  H->>H: Read workFlow.pluginList from props<br/>(already in component state — no new API call)
+
+  alt Token prefix = sk-ant-
+    H->>ANT: POST /v1/messages<br/>Header: anthropic-dangerous-direct-browser-access: true<br/>Body: { model, messages: [pluginList payload] }
+    ANT-->>H: AI explanation response
+  else Token prefix = ghp_ / ghu_ / ghs_
+    H->>GH: POST /chat/completions<br/>Body: { model, messages: [pluginList payload] }
+    GH-->>H: AI explanation response
+  end
+
+  H-->>U: Render explanation in UI
+```
+
+ASCII fallback (for environments where Mermaid is not rendered):
+
+```
+Browser
+  │
+  ├─ read ai_explain_token from localStorage
+  ├─ read workFlow.pluginList from props (no new fetch)
+  ├─ detect token type by prefix
+  │
+  ├─[sk-ant-*]──► POST https://api.anthropic.com/v1/messages
+  │                Header: anthropic-dangerous-direct-browser-access: true
+  │                        x-api-key: <token>
+  │
+  └─[ghp_/ghu_/ghs_]──► POST https://models.inference.ai.azure.com/chat/completions
+                          Header: Authorization: Bearer <token>
+```
+
+### A.3 Token Detection Logic
+
+| localStorage value prefix | Resolved provider |
+|---------------------------|-------------------|
+| `sk-ant-` | Anthropic (`api.anthropic.com`) |
+| `ghp_`, `ghu_`, `ghs_` | GitHub Models (`models.inference.ai.azure.com`) |
+| anything else | Error shown to user — no request sent |
+
+Token is read at click time; no caching in component state.
+
+### A.4 Security Considerations
+
+| Concern | Detail |
+|---------|--------|
+| **Token storage** | Stored in `localStorage` — accessible to any JavaScript on the same origin. XSS on the workflow-ui origin exposes the token. This is accepted for an internal tooling use-case where the token belongs to the operator, not an end-user. |
+| **Direct browser-to-AI-API call** | No backend proxy. The API key transits from the browser directly to the external AI provider over HTTPS. The Anthropic header `anthropic-dangerous-direct-browser-access: true` is required and explicitly acknowledges this pattern. |
+| **CORS** | Both providers permit cross-origin browser requests when the correct headers are present. Anthropic requires `anthropic-dangerous-direct-browser-access: true`; GitHub Models accepts standard `Authorization: Bearer` from browsers. No CORS proxy is needed. |
+| **Token scope** | GitHub PAT (`ghp_/ghu_/ghs_`) tokens may carry broader permissions than just model inference. Operators should create a fine-grained PAT scoped to GitHub Models only. |
+| **No token validation server-side** | The UI cannot verify whether a token is valid or revoked before making the call; it relies on the provider's 401 response to surface this to the user. |
+| **Secret not committed** | The token is never hardcoded or bundled; it lives solely in the user's browser `localStorage`. |
+
+### A.5 Trade-offs and Constraints
+
+| Trade-off | Rationale |
+|-----------|-----------|
+| **No backend proxy** | Avoids backend changes entirely — the feature ships with zero infrastructure risk. The downside is token exposure risk and no server-side audit log of AI calls. |
+| **No token rotation** | `localStorage` has no built-in expiry. Operators must manually update the token if it is rotated or revoked. A future improvement could add a TTL or per-session prompt. |
+| **API key exposure risk** | Any user with DevTools access on the same browser profile can read the token from `localStorage`. Acceptable for an operator-only internal tool; not acceptable for a multi-user public product. |
+| **Provider coupling in the client** | Token-prefix detection and provider-specific request shapes live in the React component. Adding a third provider requires a frontend-only change — no backend coordination needed, but the component accumulates provider-specific logic over time. |
+| **No streaming** | The initial implementation awaits the full response before rendering. Streaming (SSE/chunked) can be added later without any backend change. |
+| **pluginList is pre-loaded** | `workFlow.pluginList` is already available in the component props from the existing workflow fetch — the Explain button adds zero additional network round-trips to the platform's own APIs. |
+
+### A.6 What Was Explicitly NOT Changed
+
+- **workflow-operation-api** — no changes; no new endpoints; no schema changes
+- **workflow-online-api** — no changes; no new endpoints
+- **Database** — no migrations; no new tables or columns
+- **API contracts** defined in Sections 5.1 – 5.4 of this document — all unchanged
+- **Environment variables** — no new `VITE_*` variables added
+- **Authentication / authorisation** to the platform itself — unchanged; the AI token is entirely separate from platform credentials
+
+---
+
+*End of v1.1 addendum — Canvas AI Explainer. No further approval gate required for this section.*

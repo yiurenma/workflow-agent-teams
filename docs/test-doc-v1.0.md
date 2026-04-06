@@ -334,3 +334,153 @@ The following TCs are **blocking** — all must pass before any deployment is ap
 ---
 
 *End of Test Doc v1.0 — please approve before Delivery Manager dispatches development.*
+
+---
+
+## 7. Canvas AI Explainer (US-20) — Test Cases
+
+### 7.1 Scope
+
+This section covers tests for the Canvas AI Explainer feature (US-20, v1.3 addendum). All tests are UI / client-side only. No backend service changes were introduced by this feature; the tests validate browser-side behaviour, direct AI API calls, and `localStorage` token management.
+
+**Key inputs**:
+- PM Doc v1.2 addendum: AC-20-1 through AC-20-9
+- Arch Doc v1.1 addendum: Sections A.2 – A.6 (token detection logic, security constraints, data flow)
+
+### 7.2 Prerequisites
+
+| Item | Detail |
+|------|--------|
+| `TEST_APP_A` open in canvas | Workflow with ≥2 steps (e.g. one CONSUMER + one MESSAGE) so `pluginList` is non-empty |
+| `TEST_APP_EMPTY` open in canvas | Application with zero steps (empty `pluginList`) |
+| Valid Anthropic token | A real `sk-ant-*` key able to reach `api.anthropic.com` (or a mock/stubbed HTTP intercept in CI) |
+| Valid GitHub Models token | A real `ghp_*`, `ghu_*`, or `ghs_*` key able to reach `models.inference.ai.azure.com` (or stubbed) |
+| Network intercept tooling | Playwright/Cypress request interception or browser DevTools — required for security test TC-20-9 |
+| `localStorage` cleared | `ai_explain_token` absent at the start of each scenario unless stated otherwise |
+
+---
+
+### 3.6 Canvas AI Explainer
+
+#### TC-20 — Explain workflow using AI (US-20)
+
+##### TC-20-1 — Happy path: token already stored, workflow has steps → explanation displayed (AC-20-1, AC-20-4, AC-20-5, AC-20-6)
+
+| # | Step | Expected Result | Type |
+|---|------|----------------|------|
+| TC-20-1-1 | Seed `localStorage` with a valid Anthropic token: `localStorage.setItem('ai_explain_token', 'sk-ant-<valid>')` | Key present in `localStorage` | UI (setup) |
+| TC-20-1-2 | Open `TEST_APP_A` (≥2 steps) in the canvas editor | Canvas renders with nodes and edges | UI |
+| TC-20-1-3 | Locate the **Explain** button in the canvas header — verify it is positioned to the left of the **Run** button | Button is present at the correct position; no token prompt appears | UI |
+| TC-20-1-4 | Click **Explain** | No token-prompt modal appears; a loading indicator is shown on the button or in the modal while the AI call is in progress | UI |
+| TC-20-1-5 | Wait for the AI response to return | A modal dialog opens displaying a plain-language explanation of the workflow steps; text is formatted (not raw JSON) | UI |
+| TC-20-1-6 | Inspect the explanation text | The explanation references at least the step types present in `pluginList` (e.g. names or descriptions of CONSUMER, MESSAGE nodes) | UI |
+
+##### TC-20-2 — Happy path: no token stored → token prompt appears → user enters Anthropic key → explanation displayed (AC-20-2, AC-20-3, AC-20-4, AC-20-5, AC-20-6)
+
+| # | Step | Expected Result | Type |
+|---|------|----------------|------|
+| TC-20-2-1 | Ensure `ai_explain_token` is absent from `localStorage` | Key is not present | UI (setup) |
+| TC-20-2-2 | Open `TEST_APP_A` in the canvas editor and click **Explain** | A token-prompt modal (or inline input) appears requesting an AI token before any API call is made | UI |
+| TC-20-2-3 | Enter a valid Anthropic token (`sk-ant-<valid>`) and confirm | No error shown; modal transitions to loading state | UI |
+| TC-20-2-4 | Inspect `localStorage` immediately after confirming | `ai_explain_token` is set to the entered `sk-ant-*` value | UI |
+| TC-20-2-5 | Wait for the AI response | Explanation modal opens with formatted plain-language content | UI |
+| TC-20-2-6 | Close the explanation modal and click **Explain** again | Token prompt does **not** appear again; explanation is fetched and displayed directly | UI |
+
+##### TC-20-3 — Happy path: no token stored → user enters GitHub Models token → explanation displayed (AC-20-2, AC-20-5)
+
+| # | Step | Expected Result | Type |
+|---|------|----------------|------|
+| TC-20-3-1 | Ensure `ai_explain_token` is absent from `localStorage` | Key is not present | UI (setup) |
+| TC-20-3-2 | Open `TEST_APP_A` in the canvas editor and click **Explain** | Token-prompt appears | UI |
+| TC-20-3-3 | Enter a valid GitHub token with prefix `ghp_` and confirm | Token accepted; `ai_explain_token` stored in `localStorage`; request is routed to `models.inference.ai.azure.com` (verify via network intercept) | UI |
+| TC-20-3-4 | Wait for the AI response | Explanation modal opens with formatted content | UI |
+| TC-20-3-5 | Repeat TC-20-3-1 to TC-20-3-4 using a `ghu_` prefixed token | Same successful outcome | UI |
+| TC-20-3-6 | Repeat TC-20-3-1 to TC-20-3-4 using a `ghs_` prefixed token | Same successful outcome | UI |
+
+##### TC-20-4 — Token format validation: invalid prefix → error shown, no API call made (AC-20-2, arch A.3)
+
+| # | Step | Expected Result | Type |
+|---|------|----------------|------|
+| TC-20-4-1 | Ensure `ai_explain_token` is absent from `localStorage` | Key is not present | UI (setup) |
+| TC-20-4-2 | Click **Explain**; when prompted, enter a token with an unrecognised prefix (e.g. `sk-openai-abc123`) and confirm | A clear error message is shown to the user (e.g. "Unrecognised token format") | UI |
+| TC-20-4-3 | Verify no outbound request is made to any AI provider endpoint | Network log shows zero requests to `api.anthropic.com` or `models.inference.ai.azure.com` | UI |
+| TC-20-4-4 | Verify `ai_explain_token` is **not** written to `localStorage` after an invalid-prefix submission | Key remains absent | UI |
+| TC-20-4-5 | Repeat with a blank/empty token string | Error message shown; no API call; `localStorage` unchanged | UI |
+
+##### TC-20-5 — Empty workflow (no steps) → AI call still made, explanation shown (AC-20-4, AC-20-6)
+
+| # | Step | Expected Result | Type |
+|---|------|----------------|------|
+| TC-20-5-1 | Seed `localStorage` with a valid Anthropic token | Token present | UI (setup) |
+| TC-20-5-2 | Open `TEST_APP_EMPTY` (zero steps) in the canvas editor | Canvas renders with an empty graph | UI |
+| TC-20-5-3 | Click **Explain** | AI call is made (no early exit for empty `pluginList`); a modal opens with the AI's response (which may indicate there are no steps to explain) | UI |
+| TC-20-5-4 | Verify no crash or unhandled exception occurs | Browser console shows no uncaught errors; modal closes cleanly | UI |
+
+##### TC-20-6 — Clear token action removes localStorage entry and re-triggers prompt on next click (AC-20-7)
+
+| # | Step | Expected Result | Type |
+|---|------|----------------|------|
+| TC-20-6-1 | Seed `localStorage` with a valid token; click **Explain** and wait for the explanation modal to open | Explanation modal is visible | UI (setup) |
+| TC-20-6-2 | Locate the **Clear token** action in the modal footer and click it | `ai_explain_token` is immediately removed from `localStorage`; a confirmation (or silent removal) is indicated | UI |
+| TC-20-6-3 | Verify `localStorage.getItem('ai_explain_token')` returns `null` | Key is absent | UI |
+| TC-20-6-4 | Close the modal and click **Explain** again | Token-prompt modal appears (same as first-time flow) | UI |
+
+##### TC-20-7 — API error (network failure or auth failure) → error shown in modal, no crash (AC-20-8)
+
+| # | Step | Expected Result | Type |
+|---|------|----------------|------|
+| TC-20-7-1 | Seed `localStorage` with a syntactically valid but revoked/invalid Anthropic token (`sk-ant-invalid`) | Token present | UI (setup) |
+| TC-20-7-2 | Open `TEST_APP_A` and click **Explain** | Modal or loading state appears; AI request is sent to `api.anthropic.com` | UI |
+| TC-20-7-3 | The provider returns a 401 Unauthorized response | A clear error message is displayed inside the modal (e.g. "AI API error: 401 Unauthorized" or equivalent user-facing message) | UI |
+| TC-20-7-4 | Verify no crash or uncaught exception in the browser console | Browser console is free of uncaught errors | UI |
+| TC-20-7-5 | Close the modal; verify the canvas is still usable (nodes draggable, drawer openable) | Canvas is fully functional after the error | UI |
+| TC-20-7-6 | Repeat TC-20-7-1 to TC-20-7-5 with a simulated network error (block all requests to `api.anthropic.com` via browser/intercept) | Same outcome: error message shown in modal; no crash | UI |
+
+##### TC-20-8 — Explain button disabled while isLoading=true (AC-20-1, AC-20-5)
+
+| # | Step | Expected Result | Type |
+|---|------|----------------|------|
+| TC-20-8-1 | Seed `localStorage` with a valid token; open `TEST_APP_A` | Ready state | UI (setup) |
+| TC-20-8-2 | Click **Explain** and immediately inspect the button state before the AI response arrives | The **Explain** button is in a disabled or loading state (e.g. spinner, `disabled` attribute, reduced opacity) while the request is in flight | UI |
+| TC-20-8-3 | Attempt to click the **Explain** button again while it is disabled | No duplicate AI request is sent; network log shows only one outbound request | UI |
+| TC-20-8-4 | Once the response arrives and the modal opens, inspect the button | Button returns to its normal enabled state | UI |
+
+##### TC-20-9 — Security: token is not sent to the platform's own backend; all AI calls go to external providers only (AC-20-3, AC-20-9, arch A.4)
+
+| # | Step | Expected Result | Type |
+|---|------|----------------|------|
+| TC-20-9-1 | Set up a network intercept (Playwright `page.on('request', ...)` or Cypress `cy.intercept`) to capture all XHR/fetch requests during the test | Intercept active | UI (setup) |
+| TC-20-9-2 | Seed `localStorage` with a valid Anthropic token (`sk-ant-*`) | Token present | UI (setup) |
+| TC-20-9-3 | Open `TEST_APP_A` and click **Explain**; wait for the explanation modal | Explanation appears | UI |
+| TC-20-9-4 | Inspect all captured network requests for any request whose URL contains `localhost`, `operation-api` base URL (`VITE_OPERATION_API_BASE`), or `online-api` base URL (`VITE_ONLINE_API_BASE`) that also includes the `ai_explain_token` value in headers or body | **No such request exists** — the token must not appear in any request to the platform's own APIs | UI / Security |
+| TC-20-9-5 | Confirm the only outbound request carrying the token is directed at `api.anthropic.com` (for `sk-ant-*`) with `x-api-key` header | Exactly one request to `api.anthropic.com/v1/messages` carries the API key; zero requests to localhost carry it | UI / Security |
+| TC-20-9-6 | Repeat TC-20-9-1 to TC-20-9-5 with a valid GitHub token (`ghp_*`) | Token appears only in the `Authorization: Bearer` header of the request to `models.inference.ai.azure.com`; not in any platform-internal request | UI / Security |
+
+---
+
+### 7.3 Must-Pass Tests — Canvas AI Explainer (Deployment Gate Addition)
+
+The following TC-20 cases are **blocking** for any release that includes the Canvas AI Explainer feature:
+
+| TC | Reason |
+|----|--------|
+| TC-20-9-4 / TC-20-9-5 / TC-20-9-6 | Security invariant — AI token must never transit to the platform's own backend (AC-20-3, AC-20-9) |
+| TC-20-2 | Token prompt must appear on first use with no stored token — prevents silent failure on fresh environments |
+| TC-20-7-3 / TC-20-7-4 | API errors must not crash the UI — blocking defect if modal becomes unusable after a provider error |
+| TC-20-6-2 / TC-20-6-4 | Clear token must actually remove the key and re-trigger the prompt — data correctness |
+
+---
+
+### 7.4 Traceability — US-20
+
+| Requirement | Test Cases |
+|------------|-----------|
+| AC-20-1 Explain button in header, left of Run | TC-20-1-3, TC-20-8-2 |
+| AC-20-2 Token prompt on first click / no stored token; accepted formats | TC-20-2-2, TC-20-3-2, TC-20-4-2 |
+| AC-20-3 Token stored in localStorage under `ai_explain_token`; never sent to platform backend | TC-20-2-4, TC-20-3-3, TC-20-9-4 to TC-20-9-6 |
+| AC-20-4 Reads pluginList from canvas state; builds structured prompt | TC-20-1-6, TC-20-5-3 |
+| AC-20-5 Request routed to correct AI provider per token prefix | TC-20-1-4, TC-20-3-3, TC-20-8-2 to TC-20-8-3 |
+| AC-20-6 Explanation displayed in modal as formatted text | TC-20-1-5, TC-20-2-5, TC-20-3-4, TC-20-5-3 |
+| AC-20-7 Clear token removes localStorage entry; next click re-prompts | TC-20-6-2, TC-20-6-3, TC-20-6-4 |
+| AC-20-8 AI API failure shows error in modal; no crash | TC-20-7-3, TC-20-7-4, TC-20-7-5, TC-20-7-6 |
+| AC-20-9 Feature entirely client-side; no workflow data or token leaves browser except via AI provider call | TC-20-9-4 to TC-20-9-6 |
