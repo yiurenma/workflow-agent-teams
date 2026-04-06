@@ -4,8 +4,8 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 ## Open
 
-- [ ] **Canvas AI / workflow explainer (Funlane-style)** — Add a control next to **Run** at the top of the workflow canvas. On click, merge current workflow data with system context and produce a detailed explanation of the application: what each part does, the AI’s role in the workflow, and current status. **Auth:** simple path = single token wired to GitHub Copilot; advanced path = first click opens GitHub Copilot flow, then user supplies their own token for deeper/description use.
+_(nothing pending)_
 
 ## Done
 
-_(Move completed items here.)_
+- [x] **Canvas AI / workflow explainer (Funlane-style)** — Added **Explain** button next to Run in `workflow-header/index.tsx`. On click: collects current canvas workflow data, calls AI API (Anthropic `sk-ant-…` or GitHub Models `ghp_…`/`ghu_…`), and displays a step-by-step explanation in a modal. Token stored in `localStorage` — no backend changes required.
