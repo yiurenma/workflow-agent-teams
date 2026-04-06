@@ -31,8 +31,9 @@
 | TC-COPY Copy Feature | 7 | 7 | — | — |
 | TC-ANZ All-Plugin E2E | 7 | 6 | — | 1 |
 | TC-UI20 Canvas Overhaul v2.0 | 20 | 20 | — | — |
+| TC-UI21 Design Overhaul v2.1 | 20 | 20 | — | — |
 | **Unit Tests** | **117** | **117** | **—** | **—** |
-| **TOTAL** | **181** | **180** | **—** | **1** |
+| **TOTAL** | **201** | **200** | **—** | **1** |
 
 ---
 
@@ -303,6 +304,40 @@ Last run: `mvn test` — BUILD SUCCESS
 | DEF-UI-02 | Low | FIXED (871a615) — `const START = 'start-node'` removed from mapper; remaining `'start-node'` literals are intentional guards | `workFlowMapper.ts` |
 
 **Verdict: READY for deployment — all defects resolved (commits fdfc086 + 871a615).**
+
+---
+
+## TC-UI21: Design Overhaul v2.1 — commit 8d407bf
+
+**Scope:** UI design overhaul — sophisticated professional aesthetic (17 files changed)  
+**Date:** 2026-04-06  Build: 8d407bf2748ed3d7ac9e1ca977647f4a458c024a
+
+| TC-ID | Description | Layer | Expected | Result | Notes |
+|-------|-------------|-------|----------|--------|-------|
+| TC-UI21-01 | `npx tsc -p tsconfig.app.json --noEmit` | UI | 0 errors | ✅ PASS | Clean exit |
+| TC-UI21-02 | `npm run lint` | UI | 0 errors | ✅ PASS | 1 pre-existing warning, 0 errors |
+| TC-UI21-03 | `npm run build` | UI | Exits 0 | ✅ PASS | 18.60 s; chunk-size advisory only |
+| TC-UI21-04 | `PluginDisplayName` exported from `plugins.tsx` | Source | Exported map present | ✅ PASS | `Record<Plugin, string>` all 6 plugins |
+| TC-UI21-05 | `PluginDisplayName` used in sider | Source | Import + usage confirmed | ✅ PASS | `workflow-sider/index.tsx` lines 4, 65 |
+| TC-UI21-06 | No `Plugin.START` references in `src/` | Source | 0 matches | ✅ PASS | Grep returned no matches |
+| TC-UI21-07 | All 6 node files — `h-[3px]` accent strip | Source | Present in all 6 | ✅ PASS | Line 22 across all plugin files |
+| TC-UI21-08 | All 6 node files — `w-52` | Source | Present in all 6 | ✅ PASS | Line 13 across all plugin files |
+| TC-UI21-09 | All 6 node files — `ring-2 ring-indigo-500` on select | Source | Present in all 6 | ✅ PASS | Line 16 across all plugin files |
+| TC-UI21-10 | `defaultEdgeOptions.animated` is `false` | Source | `animated: false` | ✅ PASS | `canvas/index.tsx` line 47 |
+| TC-UI21-11 | `defaultEdgeOptions` stroke `"#94A3B8"` | Source | Stroke and markerEnd color set | ✅ PASS | `canvas/index.tsx` lines 54–56 |
+| TC-UI21-12 | Drawer uses `styles` prop (not deprecated `headerStyle`/`bodyStyle`) | Source | `styles={{...}}` present, no deprecated props | ✅ PASS | `workflow-drawer/index.tsx` line 72 |
+| TC-UI21-13 | `__root.tsx` nav has `bg-zinc-900` | Source | Confirmed | ✅ PASS | `__root.tsx` line 65 |
+| TC-UI21-14 | Ant Design theme `colorPrimary: "#4F46E5"`, `borderRadius: 6` | Source | Confirmed | ✅ PASS | `__root.tsx` lines 45–47 |
+| TC-UI21-15 | Workflows list page `bg-zinc-50` background | Source | Confirmed | ✅ PASS | `workflows/index.tsx` line 176 |
+| TC-UI21-16 | Background dots `gap:24 size:1 color:#CBD5E1` + `bg-zinc-50` | Source | Confirmed | ✅ PASS | `canvas/index.tsx` lines 114–119 |
+| TC-UI21-17 | Form section headers `text-[10px] uppercase tracking-widest` | Source | Present in both forms | ✅ PASS | `HttpCallForm.tsx` lines 65/101; `LogicForm.tsx` lines 55/91 |
+| TC-UI21-18 | Sidebar group renamed "Nodes" | Source | `label: "Nodes"` | ✅ PASS | `plugins.tsx` line 95 |
+| TC-UI21-19 | `children.label` is `string` | Source | `label: string` in type | ✅ PASS | `PluginMenu` type `plugins.tsx` line 87 |
+| TC-UI21-20 | Workflow header slimmer (`minHeight: 44`) | Source | Confirmed | ✅ PASS | `workflow-header/index.tsx` line 87 |
+
+**Defects:** None.
+
+**Verdict: READY — all 20 checks pass; no defects found.**
 
 ---
 
