@@ -4,7 +4,7 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 ## Open
 
-*(no open items)*
+- [ ] **Agent teams list — table page cannot scroll vertically (content hidden)** — On the **agent teams list** screen, the **entire table page** cannot be dragged or scrolled **up and down**, so **too much data stays off-screen** and is hidden from the audience. **Scope:** UX / layout / overflow (scroll container or viewport) — record for triage; implementation not started here. **Recognition label for agents:** `TODO-agent-teams-list-table-no-vertical-scroll`.
 
 - [ ] **Node editor — cross-audience clarity (dev / QA / business)** — After **Description**, **Rules**, and **Action** are visually distinct (see `EditorSection` in `workflow-ui`, branch `cursor/editor-window-section-clarity-2b2c`), extend clarity so each audience knows what to do with the drawer: **Developers** — short in-UI map from sections to persisted fields (`description`, `ruleList`, `action` / plugin payload) and link or tooltip to API/schema docs; avoid jargon-only labels without a plain-English gloss. **QA** — test script rows that assert each section saves/loads independently (e.g. change rules only, change action only) and regression cases for empty rules vs. multi-rule. **Business / product** — one-sentence definitions visible in the drawer or a “What is this?” affordance (e.g. collapsible help): *Description* = name on the canvas; *Rules* = “run only when…”; *Action* = “what the system does when it runs.” Optional: consistent color legend (same tints as cards) in drawer footer or docs. **Recognition label for agents:** `TODO-node-editor-cross-audience-clarity`.
 
