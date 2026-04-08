@@ -199,11 +199,22 @@ flowchart LR
 | **维度**   | **说明**                                                                                                      |
 | -------- | ----------------------------------------------------------------------------------------------------------- |
 | **目的**   | - 撰写 **产品侧** 需求与验收口径（即 **产品经理文档**），**不**写代码（**角色定位**）<br>- **产品侧（产品经理）**：接收 **你** 的需求描述，提交 **产品经理文档** 供你验收<br>- **不**串联实现链<br>- **不**替代 **架构师** |
-| **典型输入** | - **仅来自你** 的口述要点、备忘录、迭代目标、范围变更                                                                              |
-| **典型输出** | - **产品经理文档**（用户故事、验收标准、变更摘要）<br>- **已定稿版本** 交给 **交付经理** 作为交付契约输入                                                         |
+| **典型输入** | - **仅来自你** 的口述要点、备忘录、迭代目标、范围变更<br>- `workflow-agent-teams/TODO.md` 中的每一项待办（含缺陷、工程类若影响产品可见行为） |
+| **典型输出** | - **产品经理文档**（`pm-doc-v*.md`：用户故事、验收标准、变更摘要），供架构/测试对齐<br>- **`workflow-agent-teams/docs/pm-doc-master.md`（固定文件名）**：**双语**（英文 + 中文）**单一产品基线**，内含 **APP / REC / CV** 域与用户故事编号；**每处理一条 `TODO.md` 须同步更新**：递增文件内 **Document version**、按待办增补或修订对应 **US/AC**、在 **Revision history** 表中登记（版本、日期、TODO 标签或标题、涉及的 US/AC）。详见仓库根目录 **`cloud.md`**。 |
 | **工具**   | - 文档仓库（Markdown）<br>- 可选 issue 模板                                                                              |
-| **约束**   | - 不写实现代码<br>- 不擅自扩大范围（须经 **你** 确认）<br>- **不**替代 **交付经理** 做排期与分派<br>- **不**验收架构师文档                                       |
-| **交接**   | - 经你批准的产品经理文档 → **交付经理**（执行输入之一）<br>- **架构师** 由你直接对接，**不**经 **交付经理** 指派出稿                                             |
+| **约束**   | - 不写实现代码<br>- 不擅自扩大范围（须经 **你** 确认）<br>- **不**替代 **交付经理** 做排期与分派<br>- **不**验收架构师文档<br>- **`pm-doc-master.md` 英文与中文须同步**，不可只改一半<br>- **不得**只写切片文档而不更新主文档（除非流程明确豁免且 `Revision history` 说明原因） |
+| **交接**   | - 经你批准的产品经理文档 → **交付经理**（执行输入之一）<br>- **`pm-doc-master.md` 与切片 PM 文档一并**作为需求追溯来源<br>- **架构师** 由你直接对接，**不**经 **交付经理** 指派出稿                                             |
+
+
+#### Product Manager (English)
+
+| Dimension | Description |
+|-----------|-------------|
+| **Purpose** | Own the product requirement baseline: user stories and acceptance criteria in PM docs; **do not** write implementation code. |
+| **Inputs** | Priorities and scope from the human decision-maker; **every** item in `workflow-agent-teams/TODO.md` that the team picks up. |
+| **Outputs** | Versioned slices: `workflow-agent-teams/docs/pm-doc-v*.md` for Architect/Test alignment. **Master baseline:** `workflow-agent-teams/docs/pm-doc-master.md` — **fixed filename**; **bilingual** (full **English** + full **中文** sections); **APP / REC / CV** domain tags on stories/ACs. **For each TODO:** bump **Document version** inside the master, update EN+ZH so stories/ACs reflect the TODO, append **Revision history** (version, date, TODO label/title, US/AC touched). See repo root **`cloud.md`**. |
+| **Constraints** | Keep EN and ZH sections equivalent; never update only one language; the master must move in lockstep with TODO-driven work unless explicitly exempted with a note in **Revision history**. |
+| **Handoff** | Approved PM slices + updated **`pm-doc-master.md`** to Delivery Manager as part of the requirement contract. |
 
 
 #### 交付经理（管理）
