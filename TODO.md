@@ -20,6 +20,8 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 - [ ] **Canvas — straight-line workflow layout (recovery)** — New **canvas** capability: a **button** (or clear control) that lays out the workflow as a **single vertical line** from **top to bottom** so users who feel **lost** on a tangled artboard can **reset** to a readable linear flow in one action. **Scope:** `workflow-ui` canvas / workflow editor. **Recognition label for agents:** `TODO-canvas-straight-line-workflow-recovery`.
 
+- [ ] **Mobile — node editor (drawing book) shows large blank area below content** — On **phone** (reported on **iPhone X–class** viewports), after **tapping a node** on the **workflow canvas / drawing book**, the **node editor** (drawer / panel) often shows a **prominent empty region below** the real fields — roughly **~80% of opens** — so the user must **scroll vertically** to reach content that should feel **immediately visible**. **Expected:** Editor body height / scroll container / safe-area / `100vh` vs `100dvh` / nested `overflow` / Ant Design Drawer `height` should be tuned so **extra dead space is not the default** on mobile; content should start **flush to usable viewport** where possible. **Scope:** `workflow-ui` mobile node editor / canvas drawer. **Recognition label for agents:** `TODO-mobile-node-editor-blank-space-below`.
+
 ## Done
 
 - [x] **Canvas AI / workflow explainer (Funlane-style)** — Added **Explain** button next to Run in `workflow-header/index.tsx`. On click: collects current canvas workflow data, calls AI API (Anthropic `sk-ant-…` or GitHub Models `ghp_…`/`ghu_…`), and displays a step-by-step explanation in a modal. Token stored in `localStorage` — no backend changes required.
