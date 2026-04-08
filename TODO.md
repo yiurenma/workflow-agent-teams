@@ -16,7 +16,7 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 - [x] **Canvas — JsonPath playground (validate path + preview value)** — **Fix:** New `JsonPathModal.tsx` using `jsonpath-plus` (client-side). “JsonPath” button added to `WorkflowHeader` toolbar. TC-JSONPATH-01..05 in `canvas.spec.ts`. Docs: `pm/arch/test-doc-v16.0.md`, `ui-test-report-v16.0.md`. **Recognition label for agents:** `TODO-canvas-json-path-verification-modal`.
 
-- [ ] **E2E (Playwright) — pass 2: full regression after other Open items** — **Order:** Start only when **every other Open item** in this file is **Done** (everything above this line that is still unchecked must be finished first). Use the **same** Playwright suite from pass 1. **Run the full E2E suite automatically** again (all tests). **Report any problems** to the human. Summarize the run in `workflow-agent-teams/docs/` if useful. **Recognition label:** `TODO-e2e-playwright-pass2-full-regression-after-backlog`.
+- [x] **E2E (Playwright) — pass 2: full regression after other Open items** — Full suite run after v13.0–v16.0 shipped. **Result: 64 pass / 24 skip (viewport-mismatch) / 0 fail across 88 total runs.** No regressions. 17 new test cases added (TC-CANVAS-04, TC-CANVAS-MOB-01..05, TC-JSONPATH-01..05). Docs: `ui-test-report-v17.0.md`. **Recognition label:** `TODO-e2e-playwright-pass2-full-regression-after-backlog`.
 
 ## Done
 
