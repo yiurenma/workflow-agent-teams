@@ -18,6 +18,8 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 - [x] **E2E (Playwright) — pass 2: full regression after other Open items** — Full suite run after v13.0–v16.0 shipped. **Result: 64 pass / 24 skip (viewport-mismatch) / 0 fail across 88 total runs.** No regressions. 17 new test cases added (TC-CANVAS-04, TC-CANVAS-MOB-01..05, TC-JSONPATH-01..05). Docs: `ui-test-report-v17.0.md`. **Recognition label:** `TODO-e2e-playwright-pass2-full-regression-after-backlog`.
 
+- [ ] **Canvas — straight-line workflow layout (recovery)** — New **canvas** capability: a **button** (or clear control) that lays out the workflow as a **single vertical line** from **top to bottom** so users who feel **lost** on a tangled artboard can **reset** to a readable linear flow in one action. **Scope:** `workflow-ui` canvas / workflow editor. **Recognition label for agents:** `TODO-canvas-straight-line-workflow-recovery`.
+
 ## Done
 
 - [x] **Canvas AI / workflow explainer (Funlane-style)** — Added **Explain** button next to Run in `workflow-header/index.tsx`. On click: collects current canvas workflow data, calls AI API (Anthropic `sk-ant-…` or GitHub Models `ghp_…`/`ghu_…`), and displays a step-by-step explanation in a modal. Token stored in `localStorage` — no backend changes required.
