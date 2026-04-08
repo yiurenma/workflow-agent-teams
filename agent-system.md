@@ -200,20 +200,20 @@ flowchart LR
 | -------- | ----------------------------------------------------------------------------------------------------------- |
 | **目的**   | - 撰写 **产品侧** 需求与验收口径（即 **产品经理文档**），**不**写代码（**角色定位**）<br>- **产品侧（产品经理）**：接收 **你** 的需求描述，提交 **产品经理文档** 供你验收<br>- **不**串联实现链<br>- **不**替代 **架构师** |
 | **典型输入** | - **仅来自你** 的口述要点、备忘录、迭代目标、范围变更<br>- `workflow-agent-teams/TODO.md` 中的每一项待办（含缺陷、工程类若影响产品可见行为） |
-| **典型输出** | - **产品经理文档切片**（`pm-doc-v*.md`：**正文英文**，用户故事、验收标准、变更摘要），供架构/测试对齐<br>- **`pm-doc-master.md`（固定文件名）**：**仅此文件**为 **英文 + 中文** 双语单一产品基线（**APP / REC / CV**）；**每处理一条 `TODO.md` 须同步更新**：递增 **Document version**、按待办修订 **US/AC**、**Revision history** 登记。详见根目录 **`CLAUDE.md`** → **PM master baseline**。 |
+| **典型输出** | - **产品经理文档切片**（`pm-doc-v*.md`：用户故事、验收标准、变更摘要，**单正文**），供架构/测试对齐<br>- **`pm-doc-master.md`（固定文件名）**：**仅此文件**含 **Part 1** 与 **Part 2** 两套等价完整基线（**APP / REC / CV**）；**每处理一条 `TODO.md` 须同步更新**：递增 **Document version**、按待办修订 **US/AC**、**Revision history** 登记。详见根目录 **`CLAUDE.md`** → **PM master baseline**。 |
 | **工具**   | - 文档仓库（Markdown）<br>- 可选 issue 模板                                                                              |
-| **约束**   | - 不写实现代码<br>- 不擅自扩大范围（须经 **你** 确认）<br>- **不**替代 **交付经理** 做排期与分派<br>- **不**验收架构师文档<br>- **`pm-doc-v*.md` 须为英文**；**仅 `pm-doc-master.md` 须中英双语且同步**，不可只改一半<br>- **不得**只写切片而不更新主文档（除非流程豁免且在 `Revision history` 说明） |
+| **约束**   | - 不写实现代码<br>- 不擅自扩大范围（须经 **你** 确认）<br>- **不**替代 **交付经理** 做排期与分派<br>- **不**验收架构师文档<br>- **`pm-doc-v*.md` 单正文**，与根目录 **`CLAUDE.md`** 文风一致；**`pm-doc-master.md` 的 Part 1 与 Part 2 须同步**，不可只改一半<br>- **不得**只写切片而不更新主文档（除非流程豁免且在 `Revision history` 说明） |
 | **交接**   | - 经你批准的产品经理文档 → **交付经理**（执行输入之一）<br>- **`pm-doc-master.md` 与切片 PM 文档一并**作为需求追溯来源<br>- **架构师** 由你直接对接，**不**经 **交付经理** 指派出稿                                             |
 
 
-#### Product Manager (English)
+#### Product Manager (reference — same role)
 
 | Dimension | Description |
 |-----------|-------------|
 | **Purpose** | Own the product requirement baseline: user stories and acceptance criteria in PM docs; **do not** write implementation code. |
 | **Inputs** | Priorities and scope from the human decision-maker; **every** item in `workflow-agent-teams/TODO.md` that the team picks up. |
-| **Outputs** | Versioned slices: `workflow-agent-teams/docs/pm-doc-v*.md` — **English only** for Architect/Test alignment. **Master baseline:** `workflow-agent-teams/docs/pm-doc-master.md` — **only this PM file is bilingual** (full **English** + full **中文**); fixed filename; **APP / REC / CV** tags. **For each TODO:** bump **Document version**, update both languages in the master, append **Revision history**. See root **`CLAUDE.md`** — **PM master baseline**. |
-| **Constraints** | `pm-doc-v*.md` must be written in English. **Only** `pm-doc-master.md` requires EN + 中文 in lockstep; never update only one language in the master. Master must track every TODO unless **Revision history** notes an exemption. |
+| **Outputs** | Versioned slices: `workflow-agent-teams/docs/pm-doc-v*.md` — **single body** per file, same style as root **`CLAUDE.md`**. **Master baseline:** `workflow-agent-teams/docs/pm-doc-master.md` — **only this PM file** has **Part 1** and **Part 2** (two equivalent full copies); fixed filename; **APP / REC / CV** tags. **For each TODO:** bump **Document version**, keep Part 1 and Part 2 aligned, append **Revision history**. See root **`CLAUDE.md`** — **PM master baseline**. |
+| **Constraints** | Do not add a second parallel body inside `pm-doc-v*.md`. **Only** `pm-doc-master.md` uses Part 1 + Part 2; never update only one part. Master must track every TODO unless **Revision history** notes an exemption. |
 | **Handoff** | Approved PM slices + updated **`pm-doc-master.md`** to Delivery Manager as part of the requirement contract. |
 
 

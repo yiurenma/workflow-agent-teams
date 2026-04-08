@@ -1,10 +1,10 @@
 # PM Master — Workflow Platform (`pm-doc-master.md`)
 
-**Document version:** 2.6  
+**Document version:** 2.7  
 **Last updated:** 2026-04-08  
 **Status:** Draft — awaiting human approval  
 
-**Purpose:** Single product baseline. **Filename is fixed** (`pm-doc-master.md`); only **content** and **version** change. **This file is the only bilingual PM artifact:** full **English (EN)** + full **中文 (ZH)** must stay aligned. All other `pm-doc-v*.md` slices are **English only** (see root `CLAUDE.md`).
+**Purpose:** Single product baseline. **Filename is fixed** (`pm-doc-master.md`); only **content** and **version** change. This file is the **only** PM artifact with **two full equivalent copies** of the baseline (**Part 1** and **Part 2**). All other `pm-doc-v*.md` slices carry **one** body per file (see root `CLAUDE.md` → *PM master baseline*).
 
 **Domain prefixes:** **APP** = Application management · **REC** = Execution records & online semantics · **CV** = Canvas (authoring, Run, Explain)
 
@@ -12,7 +12,7 @@
 
 ---
 
-# English (EN)
+# Part 1
 
 ## 1. Product description
 
@@ -201,12 +201,13 @@ RBAC, batch execution, canvas step replay, Explain server-held tokens / extra pr
 
 | Doc ver | Date | TODO / trigger | US/AC touched |
 |---------|------|----------------|---------------|
-| 2.6 | 2026-04-08 | Policy: only `pm-doc-master.md` is bilingual; `pm-doc-v*.md` English only | Header purpose + CLAUDE.md alignment |
-| 2.5 | 2026-04-08 | Baseline: merge APP/REC/CV master + bilingual | Full document initial EN/ZH |
+| 2.7 | 2026-04-08 | Naming: Part 1 / Part 2; process docs avoid naming locales | Header, headings, footer, revision rows |
+| 2.6 | 2026-04-08 | Policy: master = two parts; slices = single body | Header purpose + CLAUDE.md alignment |
+| 2.5 | 2026-04-08 | Baseline: merge APP/REC/CV master + two-part body | Full document initial Part 1 + Part 2 |
 
 ---
 
-# 中文（ZH）
+# Part 2
 
 ## 1. 产品描述
 
@@ -395,9 +396,10 @@ REC-AC-16-1 重试记录 · REC-AC-16-2 计数与终态
 
 | 文档版本 | 日期 | TODO / 触发说明 | 涉及 US/AC |
 |----------|------|-----------------|------------|
-| 2.6 | 2026-04-08 | 规则：仅主文档双语；`pm-doc-v*.md` 仅英文 | 文首说明 + CLAUDE 对齐 |
-| 2.5 | 2026-04-08 | 基线：合并 APP/REC/CV 主文档 + 双语 | 全文初版 EN/ZH |
+| 2.7 | 2026-04-08 | 命名：Part 1 / Part 2；流程文件不标注语种 | 文首、标题、脚注、修订表 |
+| 2.6 | 2026-04-08 | 规则：主文档两段；切片单正文 | 文首说明 + CLAUDE 对齐 |
+| 2.5 | 2026-04-08 | 基线：合并 APP/REC/CV 主文档 + 双份正文 | 全文初版 Part 1 + Part 2 |
 
 ---
 
-*End of `pm-doc-master.md` — **only this file** is bilingual EN+ZH; `pm-doc-v*.md` are English only. Bump **Document version** and **Revision history** on every `TODO.md` change per root `CLAUDE.md` (PM master baseline).*
+*End of `pm-doc-master.md` — **only this file** carries **Part 1** and **Part 2**; `pm-doc-v*.md` use a single body each. Bump **Document version** and **Revision history** on every `TODO.md` change per root `CLAUDE.md` (PM master baseline).*
