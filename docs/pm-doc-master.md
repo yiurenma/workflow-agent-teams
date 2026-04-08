@@ -8,7 +8,7 @@
 
 **Domain prefixes:** **APP** = Application management · **REC** = Execution records & online semantics · **CV** = Canvas (authoring, Run, Explain)
 
-**PM rule (see repo root `cloud.md`):** Every `workflow-agent-teams/TODO.md` item requires updating this file, bumping **Document version**, and logging the change in **Revision history**.
+**PM rule (see root `CLAUDE.md` → section *PM master baseline*):** Every `workflow-agent-teams/TODO.md` item requires updating this file, bumping **Document version**, and logging the change in **Revision history**.
 
 ---
 
@@ -398,4 +398,4 @@ REC-AC-16-1 重试记录 · REC-AC-16-2 计数与终态
 
 ---
 
-*End of `pm-doc-master.md` — bump **Document version** and **Revision history** on every `TODO.md` change per `cloud.md`.*
+*End of `pm-doc-master.md` — bump **Document version** and **Revision history** on every `TODO.md` change per root `CLAUDE.md` (PM master baseline).*
