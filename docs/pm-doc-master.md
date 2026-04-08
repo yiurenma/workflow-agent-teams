@@ -1,10 +1,10 @@
 # PM Master — Workflow Platform (`pm-doc-master.md`)
 
-**Document version:** 2.5  
+**Document version:** 2.6  
 **Last updated:** 2026-04-08  
 **Status:** Draft — awaiting human approval  
 
-**Purpose:** Single product baseline. **Filename is fixed** (`pm-doc-master.md`); only **content** and **version** change. **English (EN)** and **中文 (ZH)** sections must stay aligned.
+**Purpose:** Single product baseline. **Filename is fixed** (`pm-doc-master.md`); only **content** and **version** change. **This file is the only bilingual PM artifact:** full **English (EN)** + full **中文 (ZH)** must stay aligned. All other `pm-doc-v*.md` slices are **English only** (see root `CLAUDE.md`).
 
 **Domain prefixes:** **APP** = Application management · **REC** = Execution records & online semantics · **CV** = Canvas (authoring, Run, Explain)
 
@@ -201,6 +201,7 @@ RBAC, batch execution, canvas step replay, Explain server-held tokens / extra pr
 
 | Doc ver | Date | TODO / trigger | US/AC touched |
 |---------|------|----------------|---------------|
+| 2.6 | 2026-04-08 | Policy: only `pm-doc-master.md` is bilingual; `pm-doc-v*.md` English only | Header purpose + CLAUDE.md alignment |
 | 2.5 | 2026-04-08 | Baseline: merge APP/REC/CV master + bilingual | Full document initial EN/ZH |
 
 ---
@@ -394,8 +395,9 @@ REC-AC-16-1 重试记录 · REC-AC-16-2 计数与终态
 
 | 文档版本 | 日期 | TODO / 触发说明 | 涉及 US/AC |
 |----------|------|-----------------|------------|
+| 2.6 | 2026-04-08 | 规则：仅主文档双语；`pm-doc-v*.md` 仅英文 | 文首说明 + CLAUDE 对齐 |
 | 2.5 | 2026-04-08 | 基线：合并 APP/REC/CV 主文档 + 双语 | 全文初版 EN/ZH |
 
 ---
 
-*End of `pm-doc-master.md` — bump **Document version** and **Revision history** on every `TODO.md` change per root `CLAUDE.md` (PM master baseline).*
+*End of `pm-doc-master.md` — **only this file** is bilingual EN+ZH; `pm-doc-v*.md` are English only. Bump **Document version** and **Revision history** on every `TODO.md` change per root `CLAUDE.md` (PM master baseline).*
