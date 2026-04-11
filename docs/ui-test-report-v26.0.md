@@ -47,15 +47,22 @@ vite v6.4.2 building for production...
 ### ✅ TC-BUILD-02: Vercel deployment succeeds
 
 **Status:** IN PROGRESS  
-**Executed:** 2026-04-11 20:58  
+**Executed:** 2026-04-11 20:58 - 21:03  
 
 **Steps executed:**
-1. Committed changes to workflow-ui/main
-2. Pushed to origin/main (commit: 03ad800)
+1. Committed changes to workflow-ui/main (commit: 03ad800)
+2. Pushed to origin/main
+3. **First deployment failed:** pnpm-lock.yaml not updated
+   - Error: "Cannot install with frozen-lockfile because pnpm-lock.yaml is not up to date"
+   - Root cause: Added dayjs to package.json but didn't update lockfile
+4. Ran `pnpm install` locally to update lockfile
+   - dayjs@1.11.20 installed successfully
+5. Committed updated pnpm-lock.yaml (commit: 1019e69)
+6. Pushed to origin/main to trigger rebuild
 
 **Current state:**
-- Code pushed successfully
-- Vercel deployment triggered automatically
+- Lockfile fix pushed successfully
+- Vercel deployment triggered automatically (second attempt)
 - Awaiting build completion
 
 **Next steps:**
