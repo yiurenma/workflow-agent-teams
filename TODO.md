@@ -4,6 +4,8 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 ## Open
 
+- [ ] **UI Design — IBM Design Language refactoring (requires /ibm-design skill)** — 按照 IBM Design Language 规范对 Workflow Studio 整体 UI 进行重新设计。使用 `/ibm-design` skill 驱动实现，覆盖排版、色彩、间距、组件风格（按钮、表格、表单、抽屉、导航）等全局视觉系统。目标：从当前 Quiet Luxury 风格迁移至 IBM Carbon Design System 风格，保持所有功能不变。**Label:** `TODO-ui-design-ibm-design-language-refactoring`.
+
 - [x] **UI Design — Quiet Luxury visual refactoring (HIGH priority, requires /frontend-design skill)** — Refactor Workflow Studio UI from generic tech aesthetic to sophisticated "Quiet Luxury" design system. **Status:** ✅ DONE — UAT PASS 2026-04-11. Fonts: Lora + DM Sans. Primary: terracotta #7C4A3A. Header: warm charcoal #2A2520 with gold #C9A87C. Background: cream #F9F7F4. Active tags: mint #EAF3EE. Table header: warm sand #F3F0EB. All functional regressions clean. Docs: `pm-doc-v27.0.md`, `arch-doc-v27.0.md`, `test-doc-v27.0.md`, `ui-test-report-v27.0.md`, `e2e-test-report-v27.0.md`, `uat-report-v27.0.md`. **Label:** `TODO-ui-design-quiet-luxury-refactoring-frontend-skill`.
 
 - [ ] **UAT E2E — Node editor drawer close button non-functional** — Clicking `.ant-drawer-close` button does not close the node editor drawer. Expected: drawer closes and returns to canvas. Actual: drawer remains visible. Users must click outside drawer or press ESC (unavailable on mobile). **Root cause:** Unknown, requires investigation of event handler attachment. Found by TC-NODE-ENHANCED-05 (Layer 5 effect verification). **Severity:** HIGH. **Impact:** Poor UX, especially on mobile. Docs: `specs/uat-report-e2e-pass3.md`. **Label:** `TODO-uat-e2e-node-drawer-close-button-broken`.
