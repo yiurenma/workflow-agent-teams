@@ -4,8 +4,6 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 ## Open
 
-## Open
-
 - [ ] **Node Editor — Form field descriptions color contrast** — Form field description text (`<p class="text-xs text-zinc-400 mb-3">`) in HttpCallForm and LogicForm has insufficient color contrast (2.62:1 on white background, 2.51:1 on #fafafa background). Requires 4.5:1 minimum for WCAG 2.1 Level AA. **Fix:** Change `text-zinc-400` to `text-zinc-600` in 3 description paragraphs: "The name shown on the canvas...", "Run only when...", "What the system does...". Found during TC-NODE-ENHANCED-01 after fixing drawer header. **Severity:** MEDIUM. **Scope:** workflow-ui form components. Docs: `specs/uat-report-e2e-pass3.md`, `docs/uat-report-v24.0.md`. **Label:** `TODO-node-editor-form-descriptions-color-contrast`.
 
 - [ ] **UAT E2E — Node editor drawer close button non-functional** — Clicking `.ant-drawer-close` button does not close the node editor drawer. Expected: drawer closes and returns to canvas. Actual: drawer remains visible. Users must click outside drawer or press ESC (unavailable on mobile). **Root cause:** Unknown, requires investigation of event handler attachment. Found by TC-NODE-ENHANCED-05 (Layer 5 effect verification). **Severity:** HIGH. **Impact:** Poor UX, especially on mobile. Docs: `specs/uat-report-e2e-pass3.md`. **Label:** `TODO-uat-e2e-node-drawer-close-button-broken`.
