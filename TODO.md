@@ -73,23 +73,34 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
   **2.1) E2E — Fix test failures from full suite run (44 failures)** *(label: `TODO-e2e-fix-test-failures-post-v30`)*
 
   - **Context:** Full E2E suite run (2026-04-12) shows 61/106 pass (57.5%), 44 failures across multiple categories. E2E Tester agent report available.
+  - **Status:** 🔄 IN PROGRESS — PM/Arch/Test docs created (v33.0), partial fixes applied to applications-desktop.spec.ts
   - **Priority breakdown:**
     - **P0 (22 failures):** Mock data/route loading issues — applications list tests failing because content not loading
       - Files: `e2e/mocks.ts`, `e2e/applications-desktop.spec.ts`, `e2e/applications-mobile.spec.ts`, `e2e/navigation.spec.ts`
       - Root cause: Tests not waiting for `networkidle` or content selectors after `page.goto()`
       - Partial fix: `workflow-ui@c385d8a` added `networkidle` waits to applications specs
-      - Remaining: Verify mock routes match actual API endpoints, add debug logging
+      - Additional fixes applied: Enhanced wait strategies in applications-desktop.spec.ts (waitForSelector with tbody tr, increased timeouts)
+      - Remaining: Apply same fixes to applications-mobile.spec.ts, navigation.spec.ts; verify mock routes; add debug logging
     - **P1 (16 failures):** Carbon Design System validation failures
       - Tests: TC-CARBON-DESK-01 through TC-CARBON-DESK-14, TC-CARBON-MOB-01 through TC-CARBON-MOB-05
       - Root cause: UI not implementing Carbon tokens (colors, border-radius, sizing)
       - Fix needed: Apply `--cds-*` tokens, override Ant Design defaults, ensure nav height ≥48px, button sizes ≥40×44px
       - Files: Theme config, global CSS, component styles
+      - Status: Not started
     - **P2 (6 failures):** Component interaction issues
       - Node editor drawer animation timing (2 failures)
       - Mobile drawer scroll bounds (2 failures)
       - Canvas mobile FAB visibility (2 failures)
+      - Status: Not started
+  - **Docs:** `pm-doc-v33.0.md`, `arch-doc-v33.0.md`, `test-doc-v33.0.md` created; `pm-doc-master.md` updated to v2.18
   - **Test artifacts:** HTML report at `workflow-ui/playwright-report/index.html`, screenshots in `test-results/`
-  - **Done when:** Pass rate ≥90% (96/106 tests), all P0 and P1 issues resolved, P2 issues documented or fixed
+  - **Done when:** Pass rate 100% (106/106 tests), all P0, P1, and P2 issues resolved, zero flaky tests
+  - **Next steps:**
+    1. Complete P0 fixes: applications-mobile.spec.ts, navigation.spec.ts wait strategies
+    2. Implement P1 fixes: Update theme.ts, index.css, Header.tsx, MobileNav.tsx with Carbon tokens
+    3. Implement P2 fixes: Animation waits, drawer scroll bounds, FAB visibility
+    4. Run full E2E suite and verify 100% pass rate
+    5. Commit all changes and update TODO to DONE
 
   ---
 
