@@ -1,39 +1,41 @@
-# PM Doc v29.0 — Node Editor Drawer Close Button Fix
+# PM Document v29.0 — Node Editor Drawer Close Button Fix
 
-**Version:** 29.0  
+**Document version:** 29.0  
 **Date:** 2026-04-12  
-**Status:** Draft — awaiting human approval  
-**Label:** `TODO-uat-e2e-node-drawer-close-button-broken`
+**Status:** Draft  
+**TODO label:** `TODO-uat-e2e-node-drawer-close-button-broken`
 
----
+## Problem Statement
 
-## Overview
+Users cannot close the node editor drawer by clicking the close button (`.ant-drawer-close`). The drawer remains open after clicking, forcing users to click outside the drawer or press ESC to dismiss it. On mobile devices where ESC is not available, this creates a poor user experience.
 
-The node editor drawer's built-in close button (×) does not dismiss the drawer when clicked. Users are forced to click outside the drawer or use workarounds. This is a HIGH severity UX defect affecting both desktop and mobile viewports.
+## User Story
 
----
+**US-29.1:** As a workflow editor user, I want to close the node editor drawer by clicking the close button, so that I can quickly return to the canvas without needing to click outside or use keyboard shortcuts.
 
-## User Stories & Acceptance Criteria
+## Acceptance Criteria
 
-### CV-US-37 — Node Editor Drawer Close Button
+**AC-29.1:** When a user clicks the drawer close button (`.ant-drawer-close`), the drawer closes immediately and focus returns to the canvas.
 
-> **As a** user editing a workflow node, **I want** the × close button on the node editor drawer to reliably close the drawer, **so that** I can return to the canvas without friction.
+**AC-29.2:** The close button works consistently on both Desktop Chrome (1280px) and Mobile Chrome (390×844).
 
-**CV-AC-37-1** — Clicking the `.ant-drawer-close` button closes the drawer on desktop (right-side drawer, 1280px viewport).
-
-**CV-AC-37-2** — Clicking the `.ant-drawer-close` button closes the drawer on mobile (bottom-sheet drawer, 390×844 viewport).
-
-**CV-AC-37-3** — After the drawer closes, the canvas is fully interactive (nodes can be clicked, panned, zoomed).
-
-**CV-AC-37-4** — No regression: clicking a node still opens the drawer; form data is preserved while the drawer is open.
-
-**CV-AC-37-5** — Clicking outside the drawer (on the canvas) also closes the drawer (existing behavior must be preserved or added).
-
----
+**AC-29.3:** After closing via the close button, the canvas remains interactive and the drawer is no longer visible in the DOM or is hidden.
 
 ## Scope
 
-**In scope:** `workflow-ui` — `WorkflowDrawer` component and its integration in `WorkflowEditor`.  
-**Out of scope:** Backend API changes, other drawer/modal components.
+- **In scope:** Fix the drawer close button click handler in `workflow-ui`
+- **Out of scope:** Other drawer behaviors (ESC key, click outside, swipe gestures)
 
----
+## Evidence
+
+- Test case TC-NODE-ENHANCED-05 (Layer 5) fails in `specs/uat-report-e2e-pass3.md`
+- Symptom: clicking `.ant-drawer-close` does not trigger drawer dismissal
+
+## Investigation Hints
+
+Potential root causes:
+- Event handler not bound to close button
+- Event propagation stopped before reaching handler
+- Ant Design `destroyOnClose` / `open` state mismatch
+- Z-index or portal overlay blocking hit target
+- ReactFlow capturing pointer events
