@@ -86,11 +86,11 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
       - Fix applied: Enhanced wait strategies in `carbon-design-desktop.spec.ts` and `carbon-design-mobile.spec.ts` (waitUntil: 'networkidle', waitForSelector with 15s timeout)
       - Committed: `workflow-ui@5572f03` - "test: fix P1 Carbon Design System test wait strategies"
       - Note: Carbon Design System theme was already properly configured in `__root.tsx` and `carbon-overrides.css` (commits `a9ead1a`, `bb50b03`)
-    - **P2 (6 failures):** Component interaction issues
-      - Node editor drawer animation timing (2 failures)
-      - Mobile drawer scroll bounds (2 failures)
-      - Canvas mobile FAB visibility (2 failures)
-      - Status: Not started
+    - **P2 (6 failures):** ✅ COMPLETE — Component interaction timing issues fixed
+      - Tests: Node editor drawer animation timing (2 failures), Mobile drawer scroll bounds (2 failures), Canvas mobile FAB visibility (2 failures)
+      - Root cause: Drawer animations not completing before assertions, FAB visibility timing issues
+      - Fix applied: Added 300ms animation waits after drawer opens in node-editor-enhanced.spec.ts and canvas-mobile.spec.ts
+      - Committed: `workflow-ui@389e471` - "test: fix P2 component interaction timing issues"
   - **Docs:** `pm-doc-v33.0.md`, `arch-doc-v33.0.md`, `test-doc-v33.0.md` created; `pm-doc-master.md` updated to v2.18
   - **Test artifacts:** HTML report at `workflow-ui/playwright-report/index.html`, screenshots in `test-results/`
   - **Done when:** Pass rate 100% (106/106 tests), all P0, P1, and P2 issues resolved, zero flaky tests
