@@ -18,13 +18,14 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
   ---
 
-  **1) E2E — node editor drawer close (HIGH)** *(label: `TODO-uat-e2e-node-drawer-close-button-broken`)*
+  **1) E2E — node editor drawer close (HIGH)** *(label: `TODO-uat-e2e-node-drawer-close-button-broken`)* ✅ **DONE 2026-04-12**
 
-  - **Symptom:** Clicking **`.ant-drawer-close`** does **not** close the node editor drawer; drawer stays open; user must click outside or ESC (ESC not available on mobile).
-  - **Evidence:** TC-NODE-ENHANCED-05 (Layer 5), `specs/uat-report-e2e-pass3.md`.
-  - **Expected:** One click on the drawer close control **always** closes the drawer and returns focus to the canvas; works on **Desktop Chrome 1280** and **Mobile Chrome 390×844**.
-  - **Investigation hints:** Event handler not bound, stopped propagation, Ant Design `destroyOnClose` / `open` state mismatch, z-index or portal overlay blocking hit target, ReactFlow capturing pointer.
-  - **Done when:** Fix merged; new or updated Playwright case proves close **effect** (drawer absent from DOM or not visible + canvas interactive); UAT note updated.
+  - **Status:** ✅ COMPLETE — UAT PASS on gamma environment
+  - **Root cause:** `e.stopPropagation()` in custom close button onClick handler was blocking click events
+  - **Fix:** Removed stopPropagation, added `ant-drawer-close` class for test compatibility, simplified onClick to call `onClose()` directly
+  - **Verification:** TC-NODE-ENHANCED-05 passes in 17.0s on https://workflow-ui-gamma.vercel.app
+  - **Docs:** `pm-doc-v29.0.md`, `arch-doc-v29.0.md`, `test-doc-v29.0.md`, `ui-test-report-v29.0.md`, `e2e-test-report-v29.0.md`, `uat-report-v29.0.md`
+  - **Commit:** `workflow-ui@cb5465f` - "fix: node editor drawer close button not working"
 
   ---
 
