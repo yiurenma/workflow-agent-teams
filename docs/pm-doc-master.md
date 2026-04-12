@@ -1,6 +1,6 @@
 # 产品需求主文档 — Workflow 平台（`pm-doc-master.md`）
 
-**文档版本：** 2.18  
+**文档版本：** 2.20  
 **更新日期：** 2026-04-12  
 **状态：** 草稿  
 
@@ -289,6 +289,12 @@ REC-AC-16-2 重试次数可追溯；用尽后终态明确。
 
 **验收标准：** CV-AC-46-1 图标是蜗牛图标 · CV-AC-46-2 在浏览器标签页、书签和历史记录中可见 · CV-AC-46-3 生成标准尺寸和格式的图标文件 · CV-AC-46-4 index.html 包含正确的图标链接标签 · CV-AC-46-5 在桌面和移动端的 Chrome、Firefox、Safari 中测试
 
+#### CV-US-48 — Carbon Design System 验证合规性（E2E 测试）
+
+> **作为** 运行五层验证 E2E 测试的 QA 工程师，**我希望** 所有 Carbon Design System 断言通过，**以便** UI 一致实现 IBM Carbon 规范，视觉回归在 UAT 前被捕获。
+
+**验收标准：** CV-AC-48-1 桌面 Carbon 验证（14 个测试用例 TC-CARBON-DESK-01~14）：导航栏高度 ≥48px、背景色 Gray 100 `#161616`、主按钮 Blue 60 `#0f62fe`、危险按钮 Red 60 `#da1e28`、所有按钮/卡片/输入框 0px 圆角、按钮最小尺寸 40×44px、焦点环 Blue 60 2px · CV-AC-48-2 移动 Carbon 验证（5 个测试用例 TC-CARBON-MOB-01~05）：移动导航抽屉背景 Gray 100、FAB 背景 Blue 60、FAB 尺寸 ≥56×56px、移动抽屉按钮遵循桌面色彩/尺寸规则、移动卡片 0px 圆角 · CV-AC-48-3 零回归（现有 61 个通过测试保持绿色）· CV-AC-48-4 实现方式：修改 `theme.ts`、`index.css`、`Header.tsx`、`MobileNav.tsx`，应用 `--cds-*` token，覆盖 Ant Design 默认值，确保最小触摸目标尺寸
+
 ---
 
 #### CV-US-36 — 界面视觉设计系统（IBM Carbon Design Language）
@@ -357,6 +363,8 @@ CV-AC-35-6 视觉验证：从 UAT 环境（https://workflow-ui-gamma.vercel.app/
 
 | 文档版本 | 日期 | 说明 | 涉及 US/AC |
 |----------|------|------|------------|
+| 2.20 | 2026-04-12 | TODO-e2e-fix-test-failures-post-v30 — E2E 测试适配 v31.0 read-first mode（8 个失败修复）；测试规范更新以匹配节点编辑器只读默认行为（点击 Edit 按钮进入编辑模式）；修复表格视口断言、FAB 尺寸期望值（Carbon 标准 48px）；目标通过率 100%（107/107 测试） | CV-US-47, CV-AC-47-1~10 |
+| 2.19 | 2026-04-12 | TODO-e2e-fix-test-failures-post-v30-p1-carbon — P1 Carbon Design System 验证修复（16 个失败测试）；修复 UI 组件未完全实现 Carbon 设计 token（颜色、圆角、尺寸）；应用 `--cds-*` token，覆盖 Ant Design 默认值，确保导航栏高度 ≥48px、按钮尺寸 ≥40×44px | CV-US-48, CV-AC-48-1~4 |
 | 2.18 | 2026-04-12 | TODO-e2e-fix-test-failures-post-v30 — E2E 测试失败修复（v30.0 五层验证改造后）；修复 Mock 数据加载问题（P0，22 个失败）、Carbon Design System 合规性（P1，16 个失败）、组件交互稳定性（P2，6 个失败）；目标通过率 ≥90%（96/106 测试） | CV-US-47, CV-AC-47-1~10 |
 | 2.17 | 2026-04-12 | TODO-uat-e2e-node-drawer-close-button-broken — 节点编辑器抽屉关闭按钮修复（HIGH 优先级）；× 按钮点击无响应，强制用户点击外部或按 ESC；移动端无 ESC 键导致体验差 | CV-US-37, CV-AC-37-1~5 |
 | 2.16 | 2026-04-12 | Workflow Studio 统一产品与 UX 计划 — 剩余子任务文档完成（§5-§10：可调整大小抽屉与只读默认、节点调色板拖放与描述、节点复制删除、AI 生成器语义质量、主页介绍文案、蜗牛图标）；PM/Arch/Test 文档齐全，待人工批准后实施 | CV-US-41~46, CV-AC-41-1~46-5 |
