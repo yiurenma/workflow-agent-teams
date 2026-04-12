@@ -73,19 +73,19 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
   **2.1) E2E — Fix test failures from full suite run (44 failures)** *(label: `TODO-e2e-fix-test-failures-post-v30`)*
 
   - **Context:** Full E2E suite run (2026-04-12) shows 61/106 pass (57.5%), 44 failures across multiple categories. E2E Tester agent report available.
-  - **Status:** 🔄 IN PROGRESS — PM/Arch/Test docs created (v33.0), P0 fixes completed and committed
+  - **Status:** 🔄 IN PROGRESS — PM/Arch/Test docs created (v33.0), P0 and P1 fixes completed and committed
   - **Priority breakdown:**
     - **P0 (22 failures):** ✅ COMPLETE — Mock data/route loading issues fixed
       - Files: `e2e/mocks.ts`, `e2e/applications-desktop.spec.ts`, `e2e/applications-mobile.spec.ts`, `e2e/navigation.spec.ts`
       - Root cause: Tests not waiting for `networkidle` or content selectors after `page.goto()`
       - Fix applied: Enhanced wait strategies in all three spec files (waitUntil: 'networkidle', waitForSelector with 15s timeout)
       - Committed: `workflow-ui@df03071` - "test: fix P0 mock data loading issues in E2E tests"
-    - **P1 (16 failures):** Carbon Design System validation failures
+    - **P1 (16 failures):** ✅ COMPLETE — Carbon Design System test wait strategies fixed
       - Tests: TC-CARBON-DESK-01 through TC-CARBON-DESK-14, TC-CARBON-MOB-01 through TC-CARBON-MOB-05
-      - Root cause: UI not implementing Carbon tokens (colors, border-radius, sizing)
-      - Fix needed: Apply `--cds-*` tokens, override Ant Design defaults, ensure nav height ≥48px, button sizes ≥40×44px
-      - Files: Theme config, global CSS, component styles
-      - Status: Not started
+      - Root cause: Carbon Design tests not waiting for `networkidle` or content selectors (same as P0)
+      - Fix applied: Enhanced wait strategies in `carbon-design-desktop.spec.ts` and `carbon-design-mobile.spec.ts` (waitUntil: 'networkidle', waitForSelector with 15s timeout)
+      - Committed: `workflow-ui@5572f03` - "test: fix P1 Carbon Design System test wait strategies"
+      - Note: Carbon Design System theme was already properly configured in `__root.tsx` and `carbon-overrides.css` (commits `a9ead1a`, `bb50b03`)
     - **P2 (6 failures):** Component interaction issues
       - Node editor drawer animation timing (2 failures)
       - Mobile drawer scroll bounds (2 failures)
