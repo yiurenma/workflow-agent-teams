@@ -73,14 +73,13 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
   **2.1) E2E — Fix test failures from full suite run (44 failures)** *(label: `TODO-e2e-fix-test-failures-post-v30`)*
 
   - **Context:** Full E2E suite run (2026-04-12) shows 61/106 pass (57.5%), 44 failures across multiple categories. E2E Tester agent report available.
-  - **Status:** 🔄 IN PROGRESS — PM/Arch/Test docs created (v33.0), partial fixes applied to applications-desktop.spec.ts
+  - **Status:** 🔄 IN PROGRESS — PM/Arch/Test docs created (v33.0), P0 fixes completed and committed
   - **Priority breakdown:**
-    - **P0 (22 failures):** Mock data/route loading issues — applications list tests failing because content not loading
+    - **P0 (22 failures):** ✅ COMPLETE — Mock data/route loading issues fixed
       - Files: `e2e/mocks.ts`, `e2e/applications-desktop.spec.ts`, `e2e/applications-mobile.spec.ts`, `e2e/navigation.spec.ts`
       - Root cause: Tests not waiting for `networkidle` or content selectors after `page.goto()`
-      - Partial fix: `workflow-ui@c385d8a` added `networkidle` waits to applications specs
-      - Additional fixes applied: Enhanced wait strategies in applications-desktop.spec.ts (waitForSelector with tbody tr, increased timeouts)
-      - Remaining: Apply same fixes to applications-mobile.spec.ts, navigation.spec.ts; verify mock routes; add debug logging
+      - Fix applied: Enhanced wait strategies in all three spec files (waitUntil: 'networkidle', waitForSelector with 15s timeout)
+      - Committed: `workflow-ui@df03071` - "test: fix P0 mock data loading issues in E2E tests"
     - **P1 (16 failures):** Carbon Design System validation failures
       - Tests: TC-CARBON-DESK-01 through TC-CARBON-DESK-14, TC-CARBON-MOB-01 through TC-CARBON-MOB-05
       - Root cause: UI not implementing Carbon tokens (colors, border-radius, sizing)
