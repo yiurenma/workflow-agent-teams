@@ -1,6 +1,6 @@
 # 产品需求主文档 — Workflow 平台（`pm-doc-master.md`）
 
-**文档版本：** 2.22  
+**文档版本：** 2.23  
 **更新日期：** 2026-04-13  
 **状态：** 草稿  
 
@@ -297,7 +297,13 @@ REC-AC-16-2 重试次数可追溯；用尽后终态明确。
 
 ---
 
-#### CV-US-49 — IBM Carbon 残留样式审计与修复
+#### CV-US-50 — 规则键必须是单个 JSONPath 表达式
+
+> **作为** 配置节点规则的工作流作者，**我希望** 系统验证每个规则键是单个有效的 JSONPath 表达式，**以便** 如果输入无效语法能立即得到反馈并避免运行时错误。
+
+**验收标准：** CV-AC-50-1 规则键字段在失焦时验证 · CV-AC-50-2 验证检查：输入非空、有效 JSONPath 语法（使用 `jsonpath-plus` 库）、不包含逗号/分号/多个路径、不包含无 JSONPath 语法的自由文本 · CV-AC-50-3 验证错误消息明确说明："规则键必须是单个有效的 JSONPath 表达式（例如 $.data.amount）" · CV-AC-50-4 当任何规则键有验证错误时保存按钮禁用 · CV-AC-50-5 保存前运行验证，一次显示所有错误 · CV-AC-50-6 占位符或帮助文本显示有效 JSONPath 示例
+
+---
 
 > **作为** Workflow Studio 用户，**我希望** 所有 UI 组件（包括确认对话框、下拉菜单、工具提示）一致遵循 IBM Carbon Design Language，**以便** 界面在所有交互流程中保持连贯且专业。
 
@@ -371,6 +377,7 @@ CV-AC-35-6 视觉验证：从 UAT 环境（https://workflow-ui-gamma.vercel.app/
 
 | 文档版本 | 日期 | 说明 | 涉及 US/AC |
 |----------|------|------|------------|
+| 2.23 | 2026-04-13 | TODO-node-editor-rule-key-json-path-validation — 规则键 JSONPath 验证；规则键字段失焦时验证；确保输入是单个有效 JSONPath 表达式；验证错误时禁用保存按钮；明确错误消息 | CV-US-50, CV-AC-50-1~6 |
 | 2.22 | 2026-04-13 | TODO-ui-ibm-carbon-audit-residual-styling — IBM Carbon 残留样式审计与修复；审计所有 UI 表面的 Carbon 合规性；修复命令式模态框（`Modal.confirm`）和门户组件（Dropdown、Tooltip、Popconfirm）的非 Carbon 样式；添加 Layer 5 断言和视觉基线以防止回归 | CV-US-49, CV-AC-49-1~7 |
 | 2.21 | 2026-04-13 | TODO-e2e-fix-test-failures-post-v30 — UAT PASS（105/106 通过）；修复 UAT 环境适配问题（oklch 颜色格式、移动端视口滚动、模态框尺寸断言、只读模式抽屉内容检查）；E2E 测试套件从 57.5% 提升至 99.1% 通过率 | CV-US-47, CV-AC-47-1~10 |
 | 2.20 | 2026-04-12 | TODO-e2e-fix-test-failures-post-v30 — E2E 测试适配 v31.0 read-first mode（8 个失败修复）；测试规范更新以匹配节点编辑器只读默认行为（点击 Edit 按钮进入编辑模式）；修复表格视口断言、FAB 尺寸期望值（Carbon 标准 48px）；目标通过率 100%（107/107 测试） | CV-US-47, CV-AC-47-1~10 |
