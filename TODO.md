@@ -8,7 +8,112 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 - [x] **UI Design — Quiet Luxury visual refactoring (HIGH priority, requires /frontend-design skill)** — Refactor Workflow Studio UI from generic tech aesthetic to sophisticated "Quiet Luxury" design system. **Status:** ✅ DONE — UAT PASS 2026-04-11. Fonts: Lora + DM Sans. Primary: terracotta #7C4A3A. Header: warm charcoal #2A2520 with gold #C9A87C. Background: cream #F9F7F4. Active tags: mint #EAF3EE. Table header: warm sand #F3F0EB. All functional regressions clean. Docs: `pm-doc-v27.0.md`, `arch-doc-v27.0.md`, `test-doc-v27.0.md`, `ui-test-report-v27.0.md`, `e2e-test-report-v27.0.md`, `uat-report-v27.0.md`. **Label:** `TODO-ui-design-quiet-luxury-refactoring-frontend-skill`.
 
-- [ ] **Workflow Studio — unified product & UX program (single open item)** — Deliver everything below as **one program** in `workflow-ui` (and tests/docs per team process). Sub-bullets are **scope only**; use **historical labels** for commits/tickets. **Clear this one checkbox** when the whole program ships. **E2E / quality:** Fix node editor drawer close (`.ant-drawer-close` — `TODO-uat-e2e-node-drawer-close-button-broken`, TC-NODE-ENHANCED-05, `specs/uat-report-e2e-pass3.md`). Retrofit Playwright **5-layer validation** (`TODO-uat-e2e-retrofit-5layer-validation`). **IBM Carbon parity:** Audit + fix **residual non-Carbon** UI (e.g. app **Delete** confirm); numbered gap list + root causes (`Modal.confirm`, portals, Tailwind); document **why Playwright missed** styling gaps and add assertions/screenshot baselines (`TODO-ui-ibm-carbon-audit-residual-styling`). **Node editor — rules:** Rule **key** = single **JSONPath** + clear error (`TODO-node-editor-rule-key-json-path-validation`). **Node editor — UX:** Resizable drawer; **read-only / text-first** on open; top **Edit**; scroll + reflow for long content (`TODO-node-editor-draggable-width-readonly-default`). **Canvas palette:** Drag nodes + **one-line description** per type + mobile parity (`TODO-canvas-node-palette-descriptions-drag-drop`). **Canvas node actions:** **Copy** full config (clipboard +/or **duplicate**) + **Delete** with **edge cleanup** (`TODO-canvas-node-copy-full-config-delete`). **AI Generate:** Prompt + **semantic** output quality; **Explain → Generate** on **`E2E_TEST_CANVAS`** UAT (`TODO-canvas-ai-workflow-generator-quality-prompt-semantics`). **Home & brand:** Home **intro copy** (`TODO-home-workflow-studio-intro-copy`); **snail favicon** (`TODO-branding-favicon-snail-tab-icon`). **Master label:** `TODO-workflow-studio-unified-product-ux-program`.
+- [ ] **Workflow Studio — unified product & UX program (single open item)**
+
+  **Master label (use for epic / tracking):** `TODO-workflow-studio-unified-product-ux-program`
+
+  **Intent:** Ship everything below as **one coordinated program** in **`workflow-ui`** (plus Playwright, QA/UAT docs, and `pm-doc-*` / `arch-doc-*` / `test-doc-*` per `CLAUDE.md`). **There is still only this one Open checkbox** — do not split the backlog into multiple top-level `[ ]` lines; use the **historical labels** in parentheses only for commits, PR titles, or sub-issues. **Mark this item Done** only when **every subsection** below is implemented, tested on UAT (`https://workflow-ui-gamma.vercel.app`), and documented.
+
+  **Cross-cutting process:** PM / Arch / Test docs and human approval gates still apply where the org requires them. **Regression bar:** Existing E2E cases (e.g. in `test-doc-v28.0.md`, `e2e-test-report-v29.0.md`) must stay green unless explicitly superseded.
+
+  ---
+
+  **1) E2E — node editor drawer close (HIGH)** *(label: `TODO-uat-e2e-node-drawer-close-button-broken`)*
+
+  - **Symptom:** Clicking **`.ant-drawer-close`** does **not** close the node editor drawer; drawer stays open; user must click outside or ESC (ESC not available on mobile).
+  - **Evidence:** TC-NODE-ENHANCED-05 (Layer 5), `specs/uat-report-e2e-pass3.md`.
+  - **Expected:** One click on the drawer close control **always** closes the drawer and returns focus to the canvas; works on **Desktop Chrome 1280** and **Mobile Chrome 390×844**.
+  - **Investigation hints:** Event handler not bound, stopped propagation, Ant Design `destroyOnClose` / `open` state mismatch, z-index or portal overlay blocking hit target, ReactFlow capturing pointer.
+  - **Done when:** Fix merged; new or updated Playwright case proves close **effect** (drawer absent from DOM or not visible + canvas interactive); UAT note updated.
+
+  ---
+
+  **2) E2E — five-layer validation retrofit** *(label: `TODO-uat-e2e-retrofit-5layer-validation`)*
+
+  - **Problem:** Suite can be 100% pass while **missing** viewport, size, interaction, and **visual/style** guarantees.
+  - **Layers (enforce in specs):** (1) **Exist** — element in DOM; (2) **Size** — e.g. `boundingBox()`, drawer height vs viewport (e.g. >35% where spec requires); (3) **Viewport** — `toBeInViewport()` / not clipped; (4) **Interact** — real click/type, not only `toBeVisible()`; (5) **Effect** — post-condition + **computed styles**, tokens, or **`toHaveScreenshot()`** where stable.
+  - **Scope:** Prioritize mobile drawers/modals, forms, node editor, app overflow menus, critical modals (Delete confirm, Explain, Generate, JsonPath).
+  - **References:** `specs/uat-report-e2e-pass3.md`, Appendix A template if present.
+  - **Done when:** Documented targets hit; representative specs upgraded; report in `e2e-test-report-v*.md`.
+
+  ---
+
+  **3) UI parity — IBM Carbon residual styling + Playwright blind spots** *(label: `TODO-ui-ibm-carbon-audit-residual-styling`)*
+
+  - **Context:** v28.0 IBM refactor shipped (`TODO-ui-design-ibm-design-language-refactoring`, `arch-doc-v28.0.md`); some surfaces still look like **legacy Ant / Quiet Luxury** (wrong radius, colors, button variant).
+  - **Reported example:** **Delete** flow for an **application** (table row or overflow) — confirm dialog or actions **not** Carbon-aligned.
+  - **Audit:** Produce a **numbered gap list**: route, screen, component file, screenshot, severity. Cover **Applications** (table, mobile cards, Settings, History, Copy, Delete), **Records**, **canvas** (toolbar, `WorkflowDrawer`, JsonPath / Explain / Generate modals), **toasts**, **empty states**, any **`Modal.confirm` / `Popconfirm`** paths.
+  - **Typical root causes:** Imperative **`Modal.confirm`** bypassing themed wrapper; **Dropdown / Tooltip / Popconfirm** in portal without Carbon `className`; **residual Tailwind** or inline styles; path **missed** in v28 sweep; feature added after v28 without Carbon review.
+  - **Fix direction:** Apply **`--cds-*` tokens**, Carbon **modal** / **danger** button patterns; prefer **declarative** `<Modal>` where needed; align typography and spacing to Carbon.
+  - **Playwright / “why didn’t we catch it?”:** E2E does **not** infer design systems — it fails only on **asserted** behavior or visuals. If tests never **open** Delete confirm, or only assert `toBeVisible()` with no **Layer 5** (computed color, border-radius, Carbon class substring, or screenshot), **pass ≠ Carbon compliance**. **Deliverable:** list which v28-era tests lacked assertions; add **per-modal** checks or **visual baselines** for critical dialogs.
+  - **Done when:** Gap list cleared; spot-check UAT; optional new UI test report version.
+
+  ---
+
+  **4) Node editor — rule key must be one JSONPath** *(label: `TODO-node-editor-rule-key-json-path-validation`)*
+
+  - **Requirement:** Each **rule key** field must contain **exactly one valid JSONPath** expression (syntax and product rules per Arch — e.g. no comma-separated paths, no free text).
+  - **UX:** Validate on **blur** and/or **before save**; blocking error prevents save if invalid.
+  - **Copy:** User-facing message must **explicitly** say the field accepts **only a single JSONPath** (not generic “invalid”).
+  - **Done when:** Happy + invalid paths covered in `test-doc` / Playwright if applicable.
+
+  ---
+
+  **5) Node editor — width, read-first mode, edit gate, long content** *(label: `TODO-node-editor-draggable-width-readonly-default`)*
+
+  - **Resizable drawer:** User can **drag the inner vertical edge** toward the canvas to **widen** the panel; respect **min/max** width; persist optional (session or `localStorage`). **Mobile:** touch drag handle or documented deferral.
+  - **Default = view:** On first open after selecting a node, show **read-only** rendering: formatted text / pretty JSON **without** input boxes so users can **skim full content** quickly.
+  - **Edit:** Prominent control at **top** (e.g. **Edit**) switches to existing **form** mode; **Done / Cancel** behavior for drafts per Arch (discard vs keep local state).
+  - **Long content:** Inner body **scrolls**; content **reflows** when panel widens; avoid silent truncation; virtualization / “Show more” only if performance requires.
+  - **Coordination:** If drawer chrome changes overlap with **§1**, implement in one pass to avoid regressions.
+
+  ---
+
+  **6) Canvas — left palette: drag-and-drop + descriptions** *(label: `TODO-canvas-node-palette-descriptions-drag-drop`)*
+
+  - **Interaction:** Every node type in the **left palette** can be **dragged** onto the canvas (parity with expectations; align copy with **mobile “Add node”** sheet).
+  - **Education:** Each type shows a **one-line description** (subtitle under title) and optional **tooltip** / “?” for a second sentence.
+  - **Example copy direction (PM + eng to validate vs runtime):** **HTTP fetch** — performs an HTTP request and brings response data into the workflow; **Safe HTTP fetch** — same, but **HTTP failure does not fail the entire workflow** (exact semantics in Arch).
+  - **Done when:** All registered palette / plugin types have descriptions; mobile lists show the **same** text.
+
+  ---
+
+  **7) Canvas — copy & delete selected node** *(label: `TODO-canvas-node-copy-full-config-delete`)*
+
+  - **Copy — full payload:** Include **description**, **ruleList**, **action** / plugin config, and any other persisted fields for that node in `WorkFlow`.
+  - **Modes:** (A) **Copy JSON to clipboard** for external use; (B) **Duplicate on canvas** — new **node id**, **offset** position, same config; **edge policy** explicit (e.g. no edges by default, or PM-specified).
+  - **Delete:** Remove node from graph; **remove all incident edges** (no dangling handles).
+  - **Placement:** Primary actions in **drawer header** and/or **node context menu** (right-click / long-press); optional keyboard shortcuts; **Delete** confirm when config or connectivity is non-trivial (PM sets threshold).
+  - **Done when:** Documented + tested desktop and mobile overflow/drawer paths.
+
+  ---
+
+  **8) AI — workflow generator semantic quality** *(label: `TODO-canvas-ai-workflow-generator-quality-prompt-semantics`)*
+
+  - **Baseline shipped:** v23.0 `WorkflowGeneratorModal.tsx`, `WORKFLOW_GENERATOR_SYSTEM_PROMPT` (`TODO-canvas-ai-workflow-json-copilot-replace`).
+  - **Gap:** Model output often **parses** and **renders** but **semantics** are wrong: plugin ids, action kinds, **rule keys** (JSONPath), rule **types**, broken edges.
+  - **Measurement loop (UAT):** App **`E2E_TEST_CANVAS`** — open `https://workflow-ui-gamma.vercel.app/workflows/E2E_TEST_CANVAS`; run **Explain** on reference workflow; paste explanation into **Generate**; compare output to golden workflow (open nodes, inspect rules/actions). Document failure **patterns** with screenshots + JSON snippets for prompt iteration.
+  - **Fix levers:** Stronger **system prompt** with canonical examples; enumerated allowed shapes; post-parse **validation** + user-visible repair; extend Playwright beyond TC-GENERATOR-01/02 if feasible.
+  - **Refs:** `docs/e2e-testing-guide.md`, `docs/e2e-full-test-guide.md`, `pm-doc-v23.0.md`, `arch-doc-v23.0.md`.
+
+  ---
+
+  **9) Home — Workflow Studio introduction** *(label: `TODO-home-workflow-studio-intro-copy`)*
+
+  - **Placement:** First / **Home** screen where users land on **applications** list.
+  - **Content:** What the product **is**, **who** it is for, **benefits** (speed vs code-only integration, shared business/engineering view, rules as guardrails, records as observability), and **feature bullets**: applications, canvas + nodes + rules/JSONPath, run, records, Explain, Generate, JsonPath tool, mobile experience.
+  - **Deliverable:** Final strings + optional layout note (hero, 2–3 benefits, feature list); accessible contrast (Carbon).
+
+  ---
+
+  **10) Branding — snail favicon (browser tab)** *(label: `TODO-branding-favicon-snail-tab-icon`)*
+
+  - **Deliverable:** Snail icon — **SVG** + **`favicon.ico`** / PNG sizes for legacy browsers; wire via `index.html` `<link rel="icon" …>`; add **`apple-touch-icon`** and **PWA manifest** icons if the app declares them.
+  - **Quality:** Readable at **16×16** and **32×32**; align with Carbon neutrals or document intentional brand exception.
+
+  ---
+
+  **Consolidated acceptance (program complete):** All of §1–§10 satisfied; UAT PASS on gamma for touched flows; `TODO.md` this item marked `[x]`; submodule / monorepo pointers and docs updated per org rules.
 
 - [x] **E2E (Playwright) — pass 1: write cases + first full run** — 33 test cases across 7 spec files (navigation, desktop apps, mobile apps, canvas, node editor, explain, records). Two Playwright projects: Desktop Chrome (1280 px) and Mobile Chrome (390 × 844, `isMobile: true`, `hasTouch: true`). All tests use `page.route()` mocks — no real backend required. Final run: **47 pass, 19 skip (viewport-mismatch), 0 fail** across 66 total runs. Docs: `ui-test-report-v12.0.md`. **Label:** `TODO-e2e-playwright-pass1-author-full-run`.
 
