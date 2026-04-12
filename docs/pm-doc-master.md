@@ -1,7 +1,7 @@
 # 产品需求主文档 — Workflow 平台（`pm-doc-master.md`）
 
-**文档版本：** 2.20  
-**更新日期：** 2026-04-12  
+**文档版本：** 2.21  
+**更新日期：** 2026-04-13  
 **状态：** 草稿  
 
 **用途：** 单一产品基线。**文件名固定**为 `pm-doc-master.md`；仅 **文档版本** 与正文变更。本文 **全文为中文**；**不包含** HTTP 路径、方法、错误码、OpenAPI 等接口规格 —— 该类内容写在 **架构师文档** 中，与本产品说明书分离。
@@ -363,6 +363,7 @@ CV-AC-35-6 视觉验证：从 UAT 环境（https://workflow-ui-gamma.vercel.app/
 
 | 文档版本 | 日期 | 说明 | 涉及 US/AC |
 |----------|------|------|------------|
+| 2.21 | 2026-04-13 | TODO-e2e-fix-test-failures-post-v30 — UAT PASS（105/106 通过）；修复 UAT 环境适配问题（oklch 颜色格式、移动端视口滚动、模态框尺寸断言、只读模式抽屉内容检查）；E2E 测试套件从 57.5% 提升至 99.1% 通过率 | CV-US-47, CV-AC-47-1~10 |
 | 2.20 | 2026-04-12 | TODO-e2e-fix-test-failures-post-v30 — E2E 测试适配 v31.0 read-first mode（8 个失败修复）；测试规范更新以匹配节点编辑器只读默认行为（点击 Edit 按钮进入编辑模式）；修复表格视口断言、FAB 尺寸期望值（Carbon 标准 48px）；目标通过率 100%（107/107 测试） | CV-US-47, CV-AC-47-1~10 |
 | 2.19 | 2026-04-12 | TODO-e2e-fix-test-failures-post-v30-p1-carbon — P1 Carbon Design System 验证修复（16 个失败测试）；修复 UI 组件未完全实现 Carbon 设计 token（颜色、圆角、尺寸）；应用 `--cds-*` token，覆盖 Ant Design 默认值，确保导航栏高度 ≥48px、按钮尺寸 ≥40×44px | CV-US-48, CV-AC-48-1~4 |
 | 2.18 | 2026-04-12 | TODO-e2e-fix-test-failures-post-v30 — E2E 测试失败修复（v30.0 五层验证改造后）；修复 Mock 数据加载问题（P0，22 个失败）、Carbon Design System 合规性（P1，16 个失败）、组件交互稳定性（P2，6 个失败）；目标通过率 ≥90%（96/106 测试） | CV-US-47, CV-AC-47-1~10 |
