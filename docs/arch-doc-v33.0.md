@@ -2,7 +2,7 @@
 
 **Document version:** 33.0  
 **Date:** 2026-04-12  
-**Status:** Draft  
+**Status:** Approved  
 **Recognition label:** `TODO-e2e-fix-test-failures-post-v30`
 
 ## Technical Approach
