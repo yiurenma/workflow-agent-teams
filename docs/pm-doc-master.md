@@ -1,6 +1,6 @@
 # 产品需求主文档 — Workflow 平台（`pm-doc-master.md`）
 
-**文档版本：** 2.21  
+**文档版本：** 2.22  
 **更新日期：** 2026-04-13  
 **状态：** 草稿  
 
@@ -291,9 +291,17 @@ REC-AC-16-2 重试次数可追溯；用尽后终态明确。
 
 #### CV-US-48 — Carbon Design System 验证合规性（E2E 测试）
 
-> **作为** 运行五层验证 E2E 测试的 QA 工程师，**我希望** 所有 Carbon Design System 断言通过，**以便** UI 一致实现 IBM Carbon 规范，视觉回归在 UAT 前被捕获。
+> **作为** 运行五层验证 E2E 测试的 QA 工程师，**我希望** 所有 Carbon Design System 断言通过，**以便** UI 一致实现 IBM Carbon 规范,视觉回归在 UAT 前被捕获。
 
 **验收标准：** CV-AC-48-1 桌面 Carbon 验证（14 个测试用例 TC-CARBON-DESK-01~14）：导航栏高度 ≥48px、背景色 Gray 100 `#161616`、主按钮 Blue 60 `#0f62fe`、危险按钮 Red 60 `#da1e28`、所有按钮/卡片/输入框 0px 圆角、按钮最小尺寸 40×44px、焦点环 Blue 60 2px · CV-AC-48-2 移动 Carbon 验证（5 个测试用例 TC-CARBON-MOB-01~05）：移动导航抽屉背景 Gray 100、FAB 背景 Blue 60、FAB 尺寸 ≥56×56px、移动抽屉按钮遵循桌面色彩/尺寸规则、移动卡片 0px 圆角 · CV-AC-48-3 零回归（现有 61 个通过测试保持绿色）· CV-AC-48-4 实现方式：修改 `theme.ts`、`index.css`、`Header.tsx`、`MobileNav.tsx`，应用 `--cds-*` token，覆盖 Ant Design 默认值，确保最小触摸目标尺寸
+
+---
+
+#### CV-US-49 — IBM Carbon 残留样式审计与修复
+
+> **作为** Workflow Studio 用户，**我希望** 所有 UI 组件（包括确认对话框、下拉菜单、工具提示）一致遵循 IBM Carbon Design Language，**以便** 界面在所有交互流程中保持连贯且专业。
+
+**验收标准：** CV-AC-49-1 审计产生编号差距列表（路由、组件、截图、严重性、根本原因）· CV-AC-49-2 审计覆盖：应用（表格、移动卡片、设置、历史、复制、删除确认）、记录、画布（工具栏、抽屉、JsonPath/Explain/Generate 模态框）、提示、空状态、所有 `Modal.confirm` / `Popconfirm` 路径 · CV-AC-49-3 所有命令式模态框（`Modal.confirm`）使用 Carbon 模态框样式：0px 圆角、主按钮 Blue 60 `#0f62fe` 48px 高、危险按钮 Red 60 `#da1e28` 48px 高、模态框标题 Gray 100 `#161616` IBM Plex Sans、模态框正文 Gray 70 `#525252` 16px、背景遮罩 `rgba(22, 22, 22, 0.5)` · CV-AC-49-4 所有门户组件（Dropdown、Tooltip、Popconfirm）应用 Carbon 类和 token：背景 Gray 10 `#f4f4f4`、文本 Gray 100 `#161616`、边框 Gray 30 `#c6c6c6` 1px、阴影 `0 2px 6px rgba(0,0,0,0.3)`、0px 圆角 · CV-AC-49-5 测试覆盖分析记录：哪些 v28 时代 Playwright 测试缺少 Layer 5（计算样式）断言、哪些流程从未在 E2E 测试中打开（如删除确认）、针对关键模态框的每模态框检查或视觉基线截图建议 · CV-AC-49-6 新增或更新 Playwright 测试用例以防止已修复差距的回归 · CV-AC-49-7 UAT 环境抽查确认 Carbon 合规性
 
 ---
 
@@ -363,6 +371,7 @@ CV-AC-35-6 视觉验证：从 UAT 环境（https://workflow-ui-gamma.vercel.app/
 
 | 文档版本 | 日期 | 说明 | 涉及 US/AC |
 |----------|------|------|------------|
+| 2.22 | 2026-04-13 | TODO-ui-ibm-carbon-audit-residual-styling — IBM Carbon 残留样式审计与修复；审计所有 UI 表面的 Carbon 合规性；修复命令式模态框（`Modal.confirm`）和门户组件（Dropdown、Tooltip、Popconfirm）的非 Carbon 样式；添加 Layer 5 断言和视觉基线以防止回归 | CV-US-49, CV-AC-49-1~7 |
 | 2.21 | 2026-04-13 | TODO-e2e-fix-test-failures-post-v30 — UAT PASS（105/106 通过）；修复 UAT 环境适配问题（oklch 颜色格式、移动端视口滚动、模态框尺寸断言、只读模式抽屉内容检查）；E2E 测试套件从 57.5% 提升至 99.1% 通过率 | CV-US-47, CV-AC-47-1~10 |
 | 2.20 | 2026-04-12 | TODO-e2e-fix-test-failures-post-v30 — E2E 测试适配 v31.0 read-first mode（8 个失败修复）；测试规范更新以匹配节点编辑器只读默认行为（点击 Edit 按钮进入编辑模式）；修复表格视口断言、FAB 尺寸期望值（Carbon 标准 48px）；目标通过率 100%（107/107 测试） | CV-US-47, CV-AC-47-1~10 |
 | 2.19 | 2026-04-12 | TODO-e2e-fix-test-failures-post-v30-p1-carbon — P1 Carbon Design System 验证修复（16 个失败测试）；修复 UI 组件未完全实现 Carbon 设计 token（颜色、圆角、尺寸）；应用 `--cds-*` token，覆盖 Ant Design 默认值，确保导航栏高度 ≥48px、按钮尺寸 ≥40×44px | CV-US-48, CV-AC-48-1~4 |
