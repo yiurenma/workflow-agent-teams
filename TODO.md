@@ -29,13 +29,14 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
   ---
 
-  **2) E2E — five-layer validation retrofit** *(label: `TODO-uat-e2e-retrofit-5layer-validation`)*
+  **2) E2E — five-layer validation retrofit** *(label: `TODO-uat-e2e-retrofit-5layer-validation`)* ✅ **DONE 2026-04-12**
 
-  - **Problem:** Suite can be 100% pass while **missing** viewport, size, interaction, and **visual/style** guarantees.
-  - **Layers (enforce in specs):** (1) **Exist** — element in DOM; (2) **Size** — e.g. `boundingBox()`, drawer height vs viewport (e.g. >35% where spec requires); (3) **Viewport** — `toBeInViewport()` / not clipped; (4) **Interact** — real click/type, not only `toBeVisible()`; (5) **Effect** — post-condition + **computed styles**, tokens, or **`toHaveScreenshot()`** where stable.
-  - **Scope:** Prioritize mobile drawers/modals, forms, node editor, app overflow menus, critical modals (Delete confirm, Explain, Generate, JsonPath).
-  - **References:** `specs/uat-report-e2e-pass3.md`, Appendix A template if present.
-  - **Done when:** Documented targets hit; representative specs upgraded; report in `e2e-test-report-v*.md`.
+  - **Status:** ✅ COMPLETE — 11 test cases upgraded with Layer 2/3/5 validation
+  - **Layers implemented:** (1) **Exist** — element in DOM; (2) **Size** — `boundingBox()`, drawer height >35% viewport; (3) **Viewport** — `toBeInViewport()`; (4) **Interact** — real click/type; (5) **Effect** — computed styles, Carbon color validation
+  - **Upgraded specs:** `canvas-mobile.spec.ts` (3 cases), `applications-mobile.spec.ts` (4 cases), `node-editor-enhanced.spec.ts` (4 cases)
+  - **Docs:** `pm-doc-v30.0.md`, `arch-doc-v30.0.md`, `test-doc-v30.0.md`, `e2e-test-report-v30.0.md`
+  - **Commit:** `workflow-ui@a4f3a70` - "test: retrofit E2E tests with five-layer validation framework"
+  - **Known issues:** Full E2E suite run shows 44/106 failures (see §2.1 below for remediation plan)
 
   ---
 
@@ -60,13 +61,45 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
   ---
 
-  **5) Node editor — width, read-first mode, edit gate, long content** *(label: `TODO-node-editor-draggable-width-readonly-default`)*
+  **5) Node editor — width, read-first mode, edit gate, long content** *(label: `TODO-node-editor-draggable-width-readonly-default`)* ✅ **DONE 2026-04-12**
 
-  - **Resizable drawer:** User can **drag the inner vertical edge** toward the canvas to **widen** the panel; respect **min/max** width; persist optional (session or `localStorage`). **Mobile:** touch drag handle or documented deferral.
-  - **Default = view:** On first open after selecting a node, show **read-only** rendering: formatted text / pretty JSON **without** input boxes so users can **skim full content** quickly.
-  - **Edit:** Prominent control at **top** (e.g. **Edit**) switches to existing **form** mode; **Done / Cancel** behavior for drafts per Arch (discard vs keep local state).
-  - **Long content:** Inner body **scrolls**; content **reflows** when panel widens; avoid silent truncation; virtualization / “Show more” only if performance requires.
-  - **Coordination:** If drawer chrome changes overlap with **§1**, implement in one pass to avoid regressions.
+  - **Status:** ✅ COMPLETE — NodeView component created, Edit/Done/Cancel buttons added, resizable drawer already implemented
+  - **Implemented:** Read-only view mode (default), Edit button switches to form mode, Done/Cancel buttons, resizable drawer (MIN_WIDTH=320px, MAX_WIDTH=900px)
+  - **Docs:** `pm-doc-v31.0.md`, `arch-doc-v31.0.md`, `test-doc-v31.0.md`
+  - **Commit:** `workflow-ui@1d4fe74` - “feat: add read-first mode and edit gate to node editor”
+
+  ---
+
+  **2.1) E2E — Fix test failures from full suite run (44 failures)** *(label: `TODO-e2e-fix-test-failures-post-v30`)*
+
+  - **Context:** Full E2E suite run (2026-04-12) shows 61/106 pass (57.5%), 44 failures across multiple categories. E2E Tester agent report available.
+  - **Priority breakdown:**
+    - **P0 (22 failures):** Mock data/route loading issues — applications list tests failing because content not loading
+      - Files: `e2e/mocks.ts`, `e2e/applications-desktop.spec.ts`, `e2e/applications-mobile.spec.ts`, `e2e/navigation.spec.ts`
+      - Root cause: Tests not waiting for `networkidle` or content selectors after `page.goto()`
+      - Partial fix: `workflow-ui@c385d8a` added `networkidle` waits to applications specs
+      - Remaining: Verify mock routes match actual API endpoints, add debug logging
+    - **P1 (16 failures):** Carbon Design System validation failures
+      - Tests: TC-CARBON-DESK-01 through TC-CARBON-DESK-14, TC-CARBON-MOB-01 through TC-CARBON-MOB-05
+      - Root cause: UI not implementing Carbon tokens (colors, border-radius, sizing)
+      - Fix needed: Apply `--cds-*` tokens, override Ant Design defaults, ensure nav height ≥48px, button sizes ≥40×44px
+      - Files: Theme config, global CSS, component styles
+    - **P2 (6 failures):** Component interaction issues
+      - Node editor drawer animation timing (2 failures)
+      - Mobile drawer scroll bounds (2 failures)
+      - Canvas mobile FAB visibility (2 failures)
+  - **Test artifacts:** HTML report at `workflow-ui/playwright-report/index.html`, screenshots in `test-results/`
+  - **Done when:** Pass rate ≥90% (96/106 tests), all P0 and P1 issues resolved, P2 issues documented or fixed
+
+  ---
+
+  **10) Branding — snail favicon (browser tab)** *(label: `TODO-branding-favicon-snail-tab-icon`)* ✅ **DONE 2026-04-12**
+
+  - **Status:** ✅ COMPLETE — Snail icon created in SVG format with Carbon Blue 60
+  - **Deliverable:** `favicon.svg` created with snail shell spiral, body, and antennae; `index.html` updated with favicon links
+  - **Docs:** `pm-doc-v32.0.md`, `arch-doc-v32.0.md`, `test-doc-v32.0.md`
+  - **Commit:** `workflow-ui@8b3fe9a` - “feat: add snail favicon for browser tab branding”
+  - **Note:** ICO and PNG formats deferred (SVG sufficient for modern browsers)
 
   ---
 
