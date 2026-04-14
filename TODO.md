@@ -140,6 +140,17 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
   ---
 
+  **14) UI/UX — Mobile drawer scroll bounds overflow** *(label: `TODO-ui-ux-mobile-drawer-scroll-bounds-overflow`)*
+
+  - **Context:** Mobile drawer content height exceeds viewport boundaries, causing scroll issues
+  - **Test Evidence:** TC-DRAWER-CLOSE-03 Mobile drawer body scroll within bounds test failed
+  - **Error:** `expect(bodyBox!.y + bodyBox!.height).toBeLessThanOrEqual(vh);`
+  - **Severity:** Medium
+  - **Status:** Intermittent failure during Playwright E2E testing on Mobile Chrome
+  - **Done when:** Drawer content stays within viewport bounds on all mobile devices
+
+  ---
+
   **Consolidated acceptance (program complete):** All of §1–§10 satisfied; UAT PASS on gamma for touched flows; `TODO.md` this item marked `[x]`; submodule / monorepo pointers and docs updated per org rules.
 
   - **Interaction:** Every node type in the **left palette** can be **dragged** onto the canvas (parity with expectations; align copy with **mobile “Add node”** sheet).
