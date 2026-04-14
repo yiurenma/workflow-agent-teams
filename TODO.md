@@ -106,12 +106,41 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
   - **Status:** ✅ COMPLETE — Snail icon created in SVG format with Carbon Blue 60
   - **Deliverable:** `favicon.svg` created with snail shell spiral, body, and antennae; `index.html` updated with favicon links
   - **Docs:** `pm-doc-v32.0.md`, `arch-doc-v32.0.md`, `test-doc-v32.0.md`
-  - **Commit:** `workflow-ui@8b3fe9a` - “feat: add snail favicon for browser tab branding”
+  - **Commit:** `workflow-ui@8b3fe9a` - "feat: add snail favicon for browser tab branding"
   - **Note:** ICO and PNG formats deferred (SVG sufficient for modern browsers)
 
   ---
 
-  **6) Canvas — left palette: drag-and-drop + descriptions** *(label: `TODO-canvas-node-palette-descriptions-drag-drop`)*
+  **11) UI/UX — Search box usability issues** *(label: `TODO-ui-ux-search-box-usability`)*
+
+  - **Context:** User feedback indicates search box has usability problems (design/functionality issues)
+  - **Severity:** Medium
+  - **Status:** Identified during UAT testing on https://workflow-ui-gamma.vercel.app
+  - **Done when:** Search box UI/UX improved and tested
+
+  ---
+
+  **12) UI/UX — Red buttons lack text labels** *(label: `TODO-ui-ux-red-buttons-no-labels`)*
+
+  - **Context:** Red buttons (疑似Delete功能) have no visible text labels, making their function unclear to users
+  - **User Impact:** Users cannot intuitively understand button functions; may cause hesitation or accidental clicks
+  - **Severity:** Medium
+  - **Recommendation:** Add explicit text labels or use icon+tooltip approach
+  - **Status:** Identified during UAT testing on https://workflow-ui-gamma.vercel.app
+  - **Done when:** All red buttons have clear, user-friendly labels
+
+  ---
+
+  **13) UI/UX — Settings button unstable** *(label: `TODO-ui-ux-settings-button-unstable`)*
+
+  - **Context:** Settings button interaction fails with "element not attached to DOM" error
+  - **Severity:** Low
+  - **Status:** Intermittent issue during automated testing
+  - **Done when:** Settings button interaction stable and reliable
+
+  ---
+
+  **Consolidated acceptance (program complete):** All of §1–§10 satisfied; UAT PASS on gamma for touched flows; `TODO.md` this item marked `[x]`; submodule / monorepo pointers and docs updated per org rules.
 
   - **Interaction:** Every node type in the **left palette** can be **dragged** onto the canvas (parity with expectations; align copy with **mobile “Add node”** sheet).
   - **Education:** Each type shows a **one-line description** (subtitle under title) and optional **tooltip** / “?” for a second sentence.
