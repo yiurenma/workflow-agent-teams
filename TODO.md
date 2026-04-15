@@ -92,77 +92,35 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 - [ ] **E2E — node editor drawer close (HIGH)** *(label: `TODO-uat-e2e-node-drawer-close-button-broken`)* ✅ ...**
 
-
 - [ ] **E2E — five-layer validation retrofit** *(label: `TODO-uat-e2e-retrofit-5layer-validation`)* ✅ **DONE...**
-
 
 - [ ] **UI parity — IBM Carbon residual styling + Playwright blind spots** *(label: `TODO-ui-ibm-carbon-audi...**
 
-
 - [ ] **Node editor — rule key must be one JSONPath** *(label: `TODO-node-editor-rule-key-json-path-validati...**
-
 
 - [ ] **Node editor — width, read-first mode, edit gate, long content** *(label: `TODO-node-editor-draggable...**
 
-
 - [ ] **E2E — Fix test failures from full suite run (44 failures)** *(label: `TODO-e2e-fix-test-failures-pos...**
-
 
 - [ ] **Branding — snail favicon (browser tab)** *(label: `TODO-branding-favicon-snail-tab-icon`)* ✅ **DONE ...**
 
-
 - [ ] **UI/UX — Search box usability issues** *(label: `TODO-ui-ux-search-box-usability`)***
-
 
 - [ ] **UI/UX — Red buttons lack text labels** *(label: `TODO-ui-ux-red-buttons-no-labels`)***
 
-
 - [ ] **UI/UX — Settings button unstable** *(label: `TODO-ui-ux-settings-button-unstable`)***
-
 
 - [ ] **UI/UX — Mobile drawer scroll bounds overflow** *(label: `TODO-ui-ux-mobile-drawer-scroll-bounds-over...**
 
-
 - [ ] **Canvas — copy & delete selected node** *(label: `TODO-canvas-node-copy-full-config-delete`)***
-
 
 - [ ] **AI — workflow generator semantic quality** *(label: `TODO-canvas-ai-workflow-generator-quality-promp...**
 
-
 - [ ] **Home — Workflow Studio introduction** *(label: `TODO-home-workflow-studio-intro-copy`)***
-
 
 - [ ] **Branding — snail favicon (browser tab)** *(label: `TODO-branding-favicon-snail-tab-icon`)***
 
-
 - [ ] **Canvas — import workflow from JSON (toolbar; validate then apply)** — **Separate from** the unified program above and **separate from** AI **Generate** (`WorkflowGeneratorModal`): add a **canvas header** action (desktop toolbar + mobile overflow) that lets the user **paste or upload a JSON string** representing a **`WorkFlow`** (same shape the app saves: `pluginList`, `uiMapList`, node ids, edges, etc.). **Primary use case:** **validate** externally produced or hand-edited JSON **before** replacing the canvas — not open-ended natural language. **Flow:** (1) **Parse** JSON (support stripping markdown code fences if users paste fenced blocks); (2) **Validate** against the app’s `WorkFlow` schema / invariants (required fields, plugin types, unique ids, edge endpoints exist); (3) Show **human-readable errors** with line/path hints where possible; (4) **Preview** summary (node count, warnings); (5) **Apply** replaces current canvas workflow (with confirm if canvas is non-empty — PM decides copy vs destructive default). **In-UI instructions (include in modal):** explain that input must be **valid workflow JSON** matching this app’s format; link or expandable “**What belongs here?**” with a **minimal example snippet** (truncated) and “**Not** for plain English — use **Generate** for that”; mention **Save** still persists to backend as today. **Carbon:** match v28 modal patterns. **Scope:** `workflow-ui` only; no new backend if validation is client-side. **Label:** `TODO-canvas-import-workflow-json-validate-apply`.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ## Completed
 
@@ -194,50 +152,32 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 - [x] **Canvas AI — workflow generator (beside Explain) — Copilot JSON replaces canvas** — **Product goal:** A **UI action** (next to **Explain**) lets the user describe **what they need**; **GitHub Copilot** returns a **single JSON string** that matches the app’s **workflow / `WorkFlow` shape** so the UI can **build or replace the canvas** from that JSON. **Fix (v23.0):** `WorkflowGeneratorModal.tsx` created with `WORKFLOW_GENERATOR_SYSTEM_PROMPT` constant. Uses `max_tokens: 4096`. Strips markdown fences from response. Generate button added to desktop toolbar and mobile ⋯ dropdown. TC-GENERATOR-01/02 added. QA/UAT: `qa-report-v19-v23.md`, `uat-report-v19-v23.md`. **Recognition label:** `TODO-canvas-ai-workflow-json-copilot-replace`.
 
-
-
-
 - [x] **Vercel Build — Missing dayjs dependency causes deployment failure** — Vercel build fails with "Rollup failed to resolve import 'dayjs' from src/routes/records/index.tsx". **Root cause:** `dayjs` and `json5` were imported in code but not declared in `package.json` dependencies. **Fix:** Added `dayjs@^1.11.13` and `json5@^2.2.3` to dependencies in `package.json` and updated `pnpm-lock.yaml`. Local build verified successful. Vercel deployment now succeeds. **Status:** ✅ COMPLETE - Vercel deployment successful on 2026-04-11. Docs: `docs/arch-doc-v26.0.md`, `docs/test-doc-v26.0.md`, `docs/ui-test-report-v26.0.md`. **Label:** `TODO-vercel-build-missing-dayjs-dependency`.
-
 
 - [x] **Node Editor — Form field descriptions color contrast** — Form field description text in HttpCallForm and LogicForm had insufficient color contrast (2.62:1 on white background, 2.51:1 on #fafafa background). **Fix:** Changed `text-zinc-400` to `text-zinc-600` in NodeSection.tsx subtitle rendering, improving contrast to 7.0:1 (white) and 6.7:1 (#fafafa), exceeding WCAG 2.1 Level AA 4.5:1 minimum. Affects 3 description paragraphs: "The name shown on the canvas...", "Run only when...", "What the system does...". **Status:** ✅ COMPLETE - UAT PASS on 2026-04-11. Docs: `docs/pm-doc-v25.0.md`, `docs/arch-doc-v25.0.md`, `docs/test-doc-v25.0.md`, `docs/ui-test-report-v25.0.md`, `docs/uat-report-v25.0.md`. **Label:** `TODO-node-editor-form-descriptions-color-contrast`.
 
-
 - [x] **UAT E2E — Accessibility violations in node editor drawer** — Node editor drawer (`.ant-drawer`) had 2 WCAG violations: (1) Missing `aria-label` on `role="dialog"` element (WCAG 2.1 Level A); (2) Insufficient color contrast 2.51:1 on "NODE CONFIGURATION" header text. **Fix:** Added `aria-label="Node Configuration"` to drawer and changed header text color to text-zinc-600 (#52525b, 7.0:1 contrast). **Status:** ✅ COMPLETE - UAT PASS on 2026-04-11 18:55. Docs: `specs/uat-report-e2e-pass3.md`, `docs/pm-doc-v24.0.md`, `docs/arch-doc-v24.0.md`, `docs/test-doc-v24.0.md`, `docs/ui-test-report-v24.0.md`, `docs/uat-report-v24.0.md`. **Label:** `TODO-uat-e2e-node-drawer-accessibility-violations`.
-
 
 - [x] **Canvas AI / workflow explainer (Funlane-style)** — Added **Explain** button next to Run in `workflow-header/index.tsx`. On click: collects current canvas workflow data, calls AI API (Anthropic `sk-ant-…` or GitHub Models `ghp_…`/`ghu_…`), and displays a step-by-step explanation in a modal. Token stored in `localStorage` — no backend changes required.
 
-
 - [x] **Explain: no GitHub token → send user to GitHub to authorize** — When Explain is clicked with no valid token, the UI now initiates GitHub OAuth Device Flow (`useGitHubDeviceFlow` hook). User sees a device code + "Open GitHub to authorize" button. On approval the token is stored and Explain runs immediately. "Paste a token manually" fallback preserved. Implemented in `workflow-ui` (`workflow-header/index.tsx` + `useGitHubDeviceFlow.ts`). No backend changes.
-
 
 - [x] **Post-mortem & process: Explain — device-flow token `gho_` rejected as "Unrecognised token format" (test + review gap)** — Root cause documented; `gho_` added to both `isValidToken` and `callAI`; TC-AUTH-10..16 added to TEST_CASES_MASTER; auth PR code review checklist added. Docs: `pm/arch/test-doc-postmortem-gho-token.md`. **Label:** `TODO-postmortem-explain-github-gho-token-validation`.
 
-
 - [x] **Post-mortem & process: Explain + GitHub OAuth device flow (CORS / same-origin proxy PR)** — Root cause (CORS) documented; same-origin proxy pattern confirmed shipped; TC-CORS-01..05 + standing UAT rule added to TEST_CASES_MASTER; network-tab checklist added. Docs: `pm/arch/test-doc-postmortem-cors-oauth.md`. **Label:** `TODO-postmortem-explain-github-oauth-cors-uat`.
-
 
 - [x] **Artboard node editor — three-panel layout + smart text formatting** — Drawer reworked into three distinct panels (Node Description / Rules / Action) via shared `NodeSection` component; `useJsonFormat` hook added for blur-triggered JSON pretty-print; auto-format on drawer open added after UAT finding. Implemented in `workflow-ui`. Docs: `pm-doc-v3.0`, `arch-doc-v3.0`, `test-doc-v3.0`, `ui-test-report-v3.0`. **Label:** `TODO-artboard-node-editor-3panel-json-format`.
 
-
 - [x] **Node editor — cross-audience clarity (dev / QA / business)** — After **Description**, **Rules**, and **Action** are visually distinct (see `EditorSection` in `workflow-ui`, branch `cursor/editor-window-section-clarity-2b2c`), extend clarity so each audience knows what to do with the drawer: **Developers** — short in-UI map from sections to persisted fields (`description`, `ruleList`, `action` / plugin payload) and link or tooltip to API/schema docs; avoid jargon-only labels without a plain-English gloss. **QA** — test script rows that assert each section saves/loads independently (e.g. change rules only, change action only) and regression cases for empty rules vs. multi-rule. **Business / product** — one-sentence definitions visible in the drawer or a "What is this?" affordance (e.g. collapsible help): *Description* = name on the canvas; *Rules* = "run only when…"; *Action* = "what the system does when it runs." Optional: consistent color legend (same tints as cards) in drawer footer or docs. **Recognition label for agents:** `TODO-node-editor-cross-audience-clarity`.
-
 
 - [x] **Application + Record tables — no vertical scroll, missing totals & translation** — Fixed layout to `h-full overflow-y-auto`; added server-side pagination (`pagination={false}` + standalone `<Pagination>`); added total count display. Docs: `pm-doc-v5.0`, `arch-doc-v5.0`, `test-doc-v5.0`, `ui-test-report-v5.0`. **Recognition label:** `TODO-application-record-tables-scroll-count-translation`.
 
-
 - [x] **Explain (GitHub Copilot path) — richer prompt hints + Markdown-friendly response UI** — Enriched `buildExplainPrompt()` to include rule details and action fields; added `SimpleMarkdown.tsx` custom renderer; Explain response now renders as structured Markdown. Docs: `pm-doc-v6.0`, `arch-doc-v6.0`, `test-doc-v6.0`, `ui-test-report-v6.0`. **Recognition label:** `TODO-explain-github-copilot-prompt-markdown-ui`.
-
 
 - [x] **Q2 — Mobile (three items)** — **(1) Applications on phone:** Added overflow menu (History / Copy / Delete) on mobile cards. **(2) Desktop-same UI:** "Desktop view" toggle button added on mobile. **(3) Constraints met:** Additive changes only; canvas unaffected. Docs: `pm-doc-v7.0`, `arch-doc-v7.0`, `test-doc-v7.0`, `ui-test-report-v7.0`, `uat-report-v7.0`. **Recognition label:** `TODO-q2-mobile-apps-actions-desktop-entry-constraints`.
 
-
 - [x] **Hosting — point operation + online API to DigitalOcean URLs** — Updated `vercel.json`, `vite.config.ts`, `CLAUDE.md`; all Render URLs replaced with DigitalOcean endpoints. Docs: `pm-doc-v8.0`, `arch-doc-v8.0`, `test-doc-v8.0`, `ui-test-report-v8.0`. **Recognition label:** `TODO-hosting-digitalocean-urls`.
-
 
 - [x] **CI/CD — remove Render deploy GitHub Actions from both API repos** — Deleted `render-deploy.yml` from `workflow-operation-api` and `workflow-online-api`; updated AGENTS.md / docs. Docs: `pm-doc-v9.0`, `arch-doc-v9.0`, `test-doc-v9.0`, `ui-test-report-v9.0`. **Recognition label:** `TODO-cicd-remove-render-github-actions`.
 
-
 - [x] **Mobile — add-application FAB (+) should be draggable** — Implemented pointer-event drag on mobile FAB with edge-snap and localStorage position persistence; tap still opens New Application dialog. Docs: `pm-doc-v10.0`, `arch-doc-v10.0`, `test-doc-v10.0`, `ui-test-report-v10.0`, `uat-report-v10.0`. **Recognition label:** `TODO-mobile-add-application-fab-draggable`.
-
