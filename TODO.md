@@ -6,6 +6,21 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 - [ ] **端到端 — 节点编辑器抽屉关闭 (HIGH)** *(label: `TODO-uat-e2e-node-drawer-close-button-broken`)* — fix: node editor drawer close button not working
 
+  **问题描述:** 点击关闭按钮时抽屉未关闭，用户被迫点击外部区域或按ESC键
+
+  **根本原因:** 自定义关闭按钮onClick处理器中的`e.stopPropagation()`阻止了点击事件
+
+  **解决方案:**
+    - 移除`e.stopPropagation()`
+    - 添加`ant-drawer-close`类以兼容测试选择器
+    - 简化onClick为直接调用`onClose()`
+
+  **验证:** TC-NODE-ENHANCED-05在https://workflow-ui-gamma.vercel.app上17秒内通过
+
+  **提交:** `workflow-ui@cb5465f` - "fix: node editor drawer close button not working"
+
+  **标签:** `TODO-uat-e2e-node-drawer-close-button-broken`
+
 - [ ] **端到端 — 五层验证改造** *(label: `TODO-uat-e2e-retrofit-5layer-validation`)* ✅ **DONE...**
 
 - [ ] **UI一致性 — IBM Carbon 剩余样式 + Playwright blind spots** *(label: `TODO-ui-ibm-carbon-audi...**
