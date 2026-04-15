@@ -4,7 +4,7 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 ## Pending
 
-- [ ] **端到端 — 节点编辑器抽屉关闭 (HIGH)** *(label: `TODO-uat-e2e-node-drawer-close-button-broken`)* ✅ ...**
+- [ ] **端到端 — 节点编辑器抽屉关闭 (HIGH)** *(label: `TODO-uat-e2e-node-drawer-close-button-broken`)* — fix: node editor drawer close button not working
 
 - [ ] **端到端 — 五层验证改造** *(label: `TODO-uat-e2e-retrofit-5layer-validation`)* ✅ **DONE...**
 
