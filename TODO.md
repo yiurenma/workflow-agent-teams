@@ -1,8 +1,8 @@
-# Agent teams to-do
+# Agent团队待办事项
 
-Backlog for agent teams to pick up in order. Check items off as they ship.
+Agent团队按顺序处理的待办事项。完成后请勾选。
 
-## Pending
+## 待办
 
 - [ ] **E2E — node editor drawer close (HIGH)** *(label: `TODO-uat-e2e-node-drawer-close-button-broken`)* ✅ ...**
 
@@ -37,7 +37,7 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 - [ ] **Canvas — import workflow from JSON (toolbar; validate then apply)** — **Separate from** the unified program above and **separate from** AI **Generate** (`WorkflowGeneratorModal`): add a **canvas header** action (desktop toolbar + mobile overflow) that lets the user **paste or upload a JSON string** representing a **`WorkFlow`** (same shape the app saves: `pluginList`, `uiMapList`, node ids, edges, etc.). **Primary use case:** **validate** externally produced or hand-edited JSON **before** replacing the canvas — not open-ended natural language. **Flow:** (1) **Parse** JSON (support stripping markdown code fences if users paste fenced blocks); (2) **Validate** against the app’s `WorkFlow` schema / invariants (required fields, plugin types, unique ids, edge endpoints exist); (3) Show **human-readable errors** with line/path hints where possible; (4) **Preview** summary (node count, warnings); (5) **Apply** replaces current canvas workflow (with confirm if canvas is non-empty — PM decides copy vs destructive default). **In-UI instructions (include in modal):** explain that input must be **valid workflow JSON** matching this app’s format; link or expandable “**What belongs here?**” with a **minimal example snippet** (truncated) and “**Not** for plain English — use **Generate** for that”; mention **Save** still persists to backend as today. **Carbon:** match v28 modal patterns. **Scope:** `workflow-ui` only; no new backend if validation is client-side. **Label:** `TODO-canvas-import-workflow-json-validate-apply`.
 
 
-## Completed
+## 已完成
 
 - [x] **UI Design — IBM Design Language refactoring (requires /ibm-design skill)** — 按照 IBM Design Language 规范对 Workflow Studio 整体 UI 进行重新设计。使用 `/ibm-design` skill 驱动实现，覆盖排版、色彩、间距、组件风格（按钮、表格、表单、抽屉、导航）等全局视觉系统。目标：从当前 Quiet Luxury 风格迁移至 IBM Carbon Design System 风格，保持所有功能不变。**Status:** ✅ DONE — UAT PASS 2026-04-12. IBM Plex Sans/Mono fonts. Blue 60 #0f62fe primary. Gray 100 #161616 nav. 0px border-radius. Carbon token system (--cds-*). 82/84 E2E pass (1 pre-existing drawer close defect). Docs: `pm-doc-v28.0.md`, `arch-doc-v28.0.md`, `test-doc-v28.0.md`, `ui-test-report-v28.0.md`, `e2e-test-report-v28.0.md`, `uat-report-v28.0.md`. **Label:** `TODO-ui-design-ibm-design-language-refactoring`.
 
