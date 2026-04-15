@@ -2,51 +2,6 @@
 
 Backlog for agent teams to pick up in order. Check items off as they ship.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Pending
-## Completed
 ## Pending
 
 - [ ] **E2E — node editor drawer close (HIGH)** *(label: `TODO-uat-e2e-node-drawer-close-button-broken`)* ✅ ...**
@@ -80,6 +35,7 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 - [ ] **Branding — snail favicon (browser tab)** *(label: `TODO-branding-favicon-snail-tab-icon`)***
 
 - [ ] **Canvas — import workflow from JSON (toolbar; validate then apply)** — **Separate from** the unified program above and **separate from** AI **Generate** (`WorkflowGeneratorModal`): add a **canvas header** action (desktop toolbar + mobile overflow) that lets the user **paste or upload a JSON string** representing a **`WorkFlow`** (same shape the app saves: `pluginList`, `uiMapList`, node ids, edges, etc.). **Primary use case:** **validate** externally produced or hand-edited JSON **before** replacing the canvas — not open-ended natural language. **Flow:** (1) **Parse** JSON (support stripping markdown code fences if users paste fenced blocks); (2) **Validate** against the app’s `WorkFlow` schema / invariants (required fields, plugin types, unique ids, edge endpoints exist); (3) Show **human-readable errors** with line/path hints where possible; (4) **Preview** summary (node count, warnings); (5) **Apply** replaces current canvas workflow (with confirm if canvas is non-empty — PM decides copy vs destructive default). **In-UI instructions (include in modal):** explain that input must be **valid workflow JSON** matching this app’s format; link or expandable “**What belongs here?**” with a **minimal example snippet** (truncated) and “**Not** for plain English — use **Generate** for that”; mention **Save** still persists to backend as today. **Carbon:** match v28 modal patterns. **Scope:** `workflow-ui` only; no new backend if validation is client-side. **Label:** `TODO-canvas-import-workflow-json-validate-apply`.
+
 
 ## Completed
 
