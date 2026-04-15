@@ -45,8 +45,11 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 
 
+
 ## Pending
+
 ## Completed
+
 ## Pending
 
 - [ ] **E2E — node editor drawer close (HIGH)** *(label: `TODO-uat-e2e-node-drawer-close-button-broken`)* ✅ ...**
