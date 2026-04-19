@@ -1,6 +1,6 @@
 # 产品需求主文档 — Workflow 平台（`pm-doc-master.md`）
 
-**文档版本：** 2.26  
+**文档版本：** 2.27  
 **更新日期：** 2026-04-19  
 **状态：** 草稿  
 
@@ -349,7 +349,13 @@ REC-AC-16-2 重试次数可追溯；用尽后终态明确。
 
 ---
 
-#### CV-US-36 — 界面视觉设计系统（IBM Carbon Design Language）
+#### CV-US-55 — 放宽 `uiMapList` 对 IFELSE 分支边的验证
+
+> **作为** 工作流作者，**我希望** 包含 IFELSE 条件分支的工作流不触发误报的校验错误，**以便** 我可以正常导入和保存含分支逻辑的工作流。
+
+**验收标准：** CV-AC-55-1 含 IFELSE 节点及其 TRUE/FALSE 分支边的工作流校验通过，不报「uiMapList 中的 source/target 不存在于 pluginList」· CV-AC-55-2 IFELSE 分支虚拟 ID（如 `IFELSE_1_true`、`IFELSE_1_false`）在 `uiMapList` 的 source/target 中被识别为合法的分支引用，不需要在 `pluginList` 中有独立条目 · CV-AC-55-3 对于真正缺失的非 IFELSE 节点引用，校验仍然报错（不漏报） · CV-AC-55-4 多个 IFELSE 节点（IFELSE_1、IFELSE_2 等）各含 TRUE/FALSE 分支时均能通过校验 · CV-AC-55-5 校验错误信息对真实缺失节点保持清晰，不因放宽规则而模糊
+
+---
 
 > **作为** Workflow Studio 用户，**我希望** 界面采用 IBM Carbon Design Language 规范，**以便** 平台传达企业级权威感、系统性精确度与专业可信度。
 
@@ -415,6 +421,7 @@ CV-AC-35-6 视觉验证：从 UAT 环境（https://workflow-ui-gamma.vercel.app/
 
 | 文档版本 | 日期 | 说明 | 涉及 US/AC |
 |----------|------|------|------------|
+| 2.27 | 2026-04-19 | TODO-validation-relax-uiMapList-ifelse-edges-vs-pluginList — 放宽 `uiMapList` 对 IFELSE 分支边的校验；IFELSE 虚拟分支 ID（如 `IFELSE_1_true/false`）不需要在 `pluginList` 中有对应条目，避免误报 Validation failed；严格校验非 IFELSE 节点引用 | CV-US-55 (新增), CV-AC-55-1~5 |
 | 2.26 | 2026-04-19 | TODO-import-plugin-types-match-api-mapper — 导入工作流插件类型验证对齐；修正 `ImportWorkflowModal` 验证逻辑以接受 6 种实际存储的插件类型（CONSUMER、CONSUMERWITHOUTERROR、IFELSE、MESSAGE、FUNCTION_V2、FUNCTION_V3）；移除错误的 UI 枚举名称（HTTP_CALL、LOGIC）；测试应用覆盖全部 6 种节点类型 | CV-US-54 (新增), CV-AC-54-1~5 |
 | 2.25 | 2026-04-19 | TODO-hub-deploy-application-name — Hub ApplicationName 部署功能；三步顺序 API 调用（CreateApplicationName → UpdateApplicationName → SaveWorkflow）；五字段表单；三步进度指示器；绿色成功标识。TODO-canvas-import-workflow-json-validate-apply — 画布从 JSON 导入工作流；客户端验证；人类可读错误；预览摘要；确认替换；界面内说明 | APP-US-52 (新增), CV-US-53 (新增) |
 | 2.24 | 2026-04-19 | TODO-frontend-rebuild-from-design-handoff — 基于设计交付文件重建 workflow-ui；IBM Carbon Design System 完整实现；像素级还原设计规范；集成现有后端 API；Playwright E2E 测试覆盖所有用户流程；确保零功能回归 | CV-US-51 (新增) |
