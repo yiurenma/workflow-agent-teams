@@ -1,6 +1,6 @@
 # 产品需求主文档 — Workflow 平台（`pm-doc-master.md`）
 
-**文档版本：** 2.28  
+**文档版本：** 2.29  
 **更新日期：** 2026-04-19  
 **状态：** 草稿  
 
@@ -349,6 +349,14 @@ REC-AC-16-2 重试次数可追溯；用尽后终态明确。
 
 ---
 
+#### CV-US-57 — 移除导入校验中边引用必须存在的检查
+
+> **作为** 工作流作者，**我希望** 导入工作流时不强制要求 `uiMapList` 边引用的节点 ID 必须存在于 `pluginList`，**以便** 我可以导入使用字符串 ID、外部格式或部分拓扑的工作流。
+
+**验收标准：** CV-AC-57-1 `ImportWorkflowModal` 验证不再检查 `uiMapList[].source` 是否存在于 `pluginList` · CV-AC-57-2 `ImportWorkflowModal` 验证不再检查 `uiMapList[].target` 是否存在于 `pluginList` · CV-AC-57-3 包含不存在节点引用的边的工作流通过验证 · CV-AC-57-4 其他验证（插件类型、重复 ID、必填字段）无回归
+
+---
+
 #### CV-US-55 — 放宽 `uiMapList` 对 IFELSE 分支边的验证
 
 > **作为** 工作流作者，**我希望** 包含 IFELSE 条件分支的工作流不触发误报的校验错误，**以便** 我可以正常导入和保存含分支逻辑的工作流。
@@ -421,6 +429,7 @@ CV-AC-35-6 视觉验证：从 UAT 环境（https://workflow-ui-gamma.vercel.app/
 
 | 文档版本 | 日期 | 说明 | 涉及 US/AC |
 |----------|------|------|------------|
+| 2.29 | 2026-04-19 | TODO-import-validation-remove-edge-reference-check — 移除导入校验中 `uiMapList` 边引用必须存在于 `pluginList` 的检查；允许导入使用字符串 ID、外部格式或部分拓扑的工作流；保留其他校验（插件类型、重复 ID、必填字段） | CV-US-57 (新增), CV-AC-57-1~2 |
 | 2.28 | 2026-04-19 | TODO-ui-form-control-heights-and-button-label-contrast — 统一表单控件高度与按钮文字可见性；输入框高度从 40px 调整为 48px 与按钮对齐；危险按钮和主按钮文字颜色明确设置为白色 `#ffffff`；对比度符合 WCAG AA 标准 | CV-US-56 (新增), CV-AC-56-1~4 |
 | 2.27 | 2026-04-19 | TODO-validation-relax-uiMapList-ifelse-edges-vs-pluginList — 放宽 `uiMapList` 对 IFELSE 分支边的校验；IFELSE 虚拟分支 ID（如 `IFELSE_1_true/false`）不需要在 `pluginList` 中有对应条目，避免误报 Validation failed；严格校验非 IFELSE 节点引用 | CV-US-55 (新增), CV-AC-55-1~5 |
 | 2.26 | 2026-04-19 | TODO-import-plugin-types-match-api-mapper — 导入工作流插件类型验证对齐；修正 `ImportWorkflowModal` 验证逻辑以接受 6 种实际存储的插件类型（CONSUMER、CONSUMERWITHOUTERROR、IFELSE、MESSAGE、FUNCTION_V2、FUNCTION_V3）；移除错误的 UI 枚举名称（HTTP_CALL、LOGIC）；测试应用覆盖全部 6 种节点类型 | CV-US-54 (新增), CV-AC-54-1~5 |
