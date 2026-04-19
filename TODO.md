@@ -6,6 +6,8 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 - [x] **前端重构 — 基于设计交付文件重建 workflow-ui (HIGH)** *(label: `TODO-frontend-rebuild-from-design-handoff`)* — ✅ **DONE** — UAT PASS 2026-04-19. Rebuilt workflow-ui with IBM Carbon Design System. Branch `feature/design-handoff-rebuild` merged to `main`. All 115 Playwright E2E tests passed (1 skipped). Commits: `e9bc845`, `5e2f77e`. Design verified: IBM Plex Sans/Mono fonts, #0f62fe primary, #161616 nav, 0px border-radius, full responsive. Fixed 2 mobile regressions (FAB z-index, nav test). Docs: `pm-doc-v37.0.md`, `arch-doc-v37.0.md`, `test-doc-v37.0.md`, `ui-test-report-v37.0.md`, `e2e-test-report-v37.0.md`. **Label:** `TODO-frontend-rebuild-from-design-handoff`.
 
+- [ ] **Hub — ApplicationName 部署 (Deploy)** *(label: `TODO-hub-deploy-application-name`)* — 在 **ApplicationName** 操作区增加 **Deploy**：点击后先展示**功能说明**；用户填写 **Deploy URL（仅 base，如 UAT operation-api）**、应用名、服务账号用户名/密码、环境（五项）；系统在 base 后自动拼接 **`CreateApplicationName` → `UpdateApplicationName` → `SaveWorkflow`** 三个路径顺序调用，完成创建应用、更新应用数据（对齐 Hub **Save** 的应用侧语义）、保存工作流；界面展示三步进度，**三步均成功**显示绿色成功标识。UAT 关键用例：**已加载的现有应用**上下文中，表单应用名填**另一个名称**，URL 使用 UAT，验证端到端成功。英文细则与 Arch 要求见主仓 `docs/TODO.md`。
+
 - [ ] **端到端 — 节点编辑器抽屉关闭 (HIGH)** *(label: `TODO-uat-e2e-node-drawer-close-button-broken`)* — fix: node editor drawer close button not working
 
   **问题描述:** 点击关闭按钮时抽屉未关闭，用户被迫点击外部区域或按ESC键
