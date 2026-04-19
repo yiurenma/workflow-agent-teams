@@ -8,6 +8,8 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 - [x] **Hub — ApplicationName 部署 (Deploy)** *(label: `TODO-hub-deploy-application-name`)* — ✅ **DONE** — UAT PASS 2026-04-19. DeployModal component with 5-field form (Deploy URL, Application Name, Username, Password, Environment). Three-step API sequence: CreateApplicationName → UpdateApplicationName → SaveWorkflow. Progress indicator with success/error states. Deploy button added to desktop table Actions column and mobile overflow menu. Basic Auth with HTTPS validation. E2E tests: 6/6 passed (TC-DEPLOY-01 through TC-DEPLOY-06). Commits: workflow-ui@a70562b. Docs: `pm-doc-v38.0.md`, `arch-doc-v38.0.md`, `test-doc-v38.0.md`, `ui-test-report-v38.0.md`, `e2e-test-report-v38.0.md`. **Label:** `TODO-hub-deploy-application-name`.
 
+- [ ] **导入 — `action.type` 与 operation-api / `workFlowMapper` 对齐 + 测试应用覆盖全部节点类型 (HIGH)** *(label: `TODO-import-plugin-types-match-api-mapper`)* — **问题:** `ImportWorkflowModal` 用 `HTTP_CALL` / `LOGIC` 校验，与真实保存的 **`pluginList[].action.type`** 不一致。**正确 wire 值:** `CONSUMER`、`CONSUMERWITHOUTERROR`（无下划线）、`IFELSE`、`MESSAGE`、`FUNCTION_V2`、`FUNCTION_V3`（读入可兼容 `FUNCTION`）。**要做:** 校验与 UI 文案对齐 `workflow-ui/src/api/mappers/workFlowMapper.ts`；可选 operation-api OpenAPI enum 或类型目录接口。**测试应用:** 修复后 UAT/回归用应用须各含上述 **6 种** 步骤各至少一步，覆盖保存/加载/画布/抽屉/**导入导出**。 umbrella `docs/TODO.md` 有英文详表。
+
 - [ ] **端到端 — 节点编辑器抽屉关闭 (HIGH)** *(label: `TODO-uat-e2e-node-drawer-close-button-broken`)* — fix: node editor drawer close button not working
 
   **问题描述:** 点击关闭按钮时抽屉未关闭，用户被迫点击外部区域或按ESC键
