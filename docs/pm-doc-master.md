@@ -1,6 +1,6 @@
 # 产品需求主文档 — Workflow 平台（`pm-doc-master.md`）
 
-**文档版本：** 2.27  
+**文档版本：** 2.28  
 **更新日期：** 2026-04-19  
 **状态：** 草稿  
 
@@ -421,6 +421,7 @@ CV-AC-35-6 视觉验证：从 UAT 环境（https://workflow-ui-gamma.vercel.app/
 
 | 文档版本 | 日期 | 说明 | 涉及 US/AC |
 |----------|------|------|------------|
+| 2.28 | 2026-04-19 | TODO-ui-form-control-heights-and-button-label-contrast — 统一表单控件高度与按钮文字可见性；输入框高度从 40px 调整为 48px 与按钮对齐；危险按钮和主按钮文字颜色明确设置为白色 `#ffffff`；对比度符合 WCAG AA 标准 | CV-US-56 (新增), CV-AC-56-1~4 |
 | 2.27 | 2026-04-19 | TODO-validation-relax-uiMapList-ifelse-edges-vs-pluginList — 放宽 `uiMapList` 对 IFELSE 分支边的校验；IFELSE 虚拟分支 ID（如 `IFELSE_1_true/false`）不需要在 `pluginList` 中有对应条目，避免误报 Validation failed；严格校验非 IFELSE 节点引用 | CV-US-55 (新增), CV-AC-55-1~5 |
 | 2.26 | 2026-04-19 | TODO-import-plugin-types-match-api-mapper — 导入工作流插件类型验证对齐；修正 `ImportWorkflowModal` 验证逻辑以接受 6 种实际存储的插件类型（CONSUMER、CONSUMERWITHOUTERROR、IFELSE、MESSAGE、FUNCTION_V2、FUNCTION_V3）；移除错误的 UI 枚举名称（HTTP_CALL、LOGIC）；测试应用覆盖全部 6 种节点类型 | CV-US-54 (新增), CV-AC-54-1~5 |
 | 2.25 | 2026-04-19 | TODO-hub-deploy-application-name — Hub ApplicationName 部署功能；三步顺序 API 调用（CreateApplicationName → UpdateApplicationName → SaveWorkflow）；五字段表单；三步进度指示器；绿色成功标识。TODO-canvas-import-workflow-json-validate-apply — 画布从 JSON 导入工作流；客户端验证；人类可读错误；预览摘要；确认替换；界面内说明 | APP-US-52 (新增), CV-US-53 (新增) |
