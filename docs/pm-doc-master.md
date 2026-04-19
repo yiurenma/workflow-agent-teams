@@ -1,6 +1,6 @@
 # 产品需求主文档 — Workflow 平台（`pm-doc-master.md`）
 
-**文档版本：** 2.24  
+**文档版本：** 2.25  
 **更新日期：** 2026-04-19  
 **状态：** 草稿  
 
@@ -92,6 +92,18 @@
 **移动：** APP-AC-11-M1 ⋯ 历史，关键决策信息与桌面等价 · APP-AC-11-M2 不自动进 **CV**  
 
 **通用：** APP-AC-11-G1 进入 **CV** 后与回滚结果一致  
+
+#### APP-US-52 — 部署应用到远程环境
+
+> **作为** 集成工程师，**我希望** 从 Hub 将应用名称及其工作流部署到远程环境（如 UAT operation-api），**以便** 无需手动调用 API 即可将本地配置推送到目标部署环境。
+
+**桌面：** APP-AC-52-D1 ApplicationName 操作区的 Deploy 按钮 · APP-AC-52-D2 模态框在表单前展示功能说明 · APP-AC-52-D3 表单收集：Deploy URL（仅 base，如 UAT operation-api）、应用名称、服务账号用户名、服务账号密码、环境（共 5 个字段）· APP-AC-52-D4 系统自动在 base URL 后拼接三个路径并按顺序调用：`CreateApplicationName` → `UpdateApplicationName` → `SaveWorkflow` · APP-AC-52-D5 界面显示三步进度指示器 · APP-AC-52-D6 成功状态：三步均成功，显示绿色成功标识 · APP-AC-52-D7 失败状态：清晰的错误消息指示哪一步失败
+
+**移动：** APP-AC-52-M1 Deploy 操作在溢出菜单中可用 · APP-AC-52-M2 表单字段和流程与桌面一致 · APP-AC-52-M3 进度和成功/失败指示器适配移动视口
+
+**通用：** APP-AC-52-G1 Deploy 操作基于当前已加载的应用上下文 · APP-AC-52-G2 表单中的应用名称字段可与当前加载的应用不同（支持部署到不同名称）· APP-AC-52-G3 三个 API 调用顺序执行：创建应用名称、更新应用数据（对齐 Hub Save 在应用侧的语义）、保存工作流 · APP-AC-52-G4 三步必须全部成功才算整体成功 · APP-AC-52-G5 使用服务账号凭据向目标环境认证
+
+**UAT 关键用例：** 在已加载的现有应用上下文中，表单填写不同的应用名称，使用 UAT URL，验证端到端成功（三个 API 调用均成功，应用以新名称部署到目标环境）。
 
 ---
 
@@ -303,6 +315,16 @@ REC-AC-16-2 重试次数可追溯；用尽后终态明确。
 
 **验收标准：** CV-AC-51-1 在 https://github.com/yiurenma/workflow-ui 创建新分支用于重建 · CV-AC-51-2 完整实现主页（英雄区 + 功能卡片）、应用列表（搜索/分页/CRUD）、画布（节点面板/拖放/连线）、记录列表（筛选/详情）四大界面 · CV-AC-51-3 IBM Plex Sans 正文字体、IBM Plex Mono 代码字体 · CV-AC-51-4 主色 #0f62fe，导航背景 #161616，所有组件 0px 圆角 · CV-AC-51-5 桌面 1280px 和移动 390×844 响应式 · CV-AC-51-6 保持与现有 operation-api 和 online-api 的 API 集成 · CV-AC-51-7 Playwright 测试覆盖所有用户流程（桌面 Chrome + 移动 Chrome） · CV-AC-51-8 现有 E2E 测试套件零回归 · CV-AC-51-9 WCAG 2.1 AA 无障碍合规
 
+#### CV-US-53 — 从 JSON 导入工作流并验证
+
+> **作为** 工作流作者，**我希望** 粘贴或上传表示完整工作流的 JSON 字符串，并在应用到画布前由系统验证，**以便** 我可以放心地导入外部生成或手工编辑的工作流，确保语法错误在替换当前工作前被捕获。
+
+**桌面：** CV-AC-53-D1 画布头部工具栏的导入操作 · CV-AC-53-D2 模态框允许粘贴或文件上传 JSON 字符串 · CV-AC-53-D3 系统剥离 markdown 代码围栏（处理用户粘贴围栏块的情况）· CV-AC-53-D4 JSON 解析并针对 WorkFlow 模式验证（必填字段、插件类型、唯一 ID、边端点存在）· CV-AC-53-D5 验证错误显示人类可读消息，尽可能提供行/路径提示 · CV-AC-53-D6 显示预览摘要（节点数、警告）· CV-AC-53-D7 应用按钮替换当前画布工作流 · CV-AC-53-D8 画布非空时确认提示（PM 决定复制 vs 破坏性默认）· CV-AC-53-D9 界面内说明解释输入必须是匹配应用格式的有效工作流 JSON · CV-AC-53-D10 可展开的"这里应该放什么？"部分，带最小示例片段 · CV-AC-53-D11 说明澄清这不是用于纯英文（用 Generate 处理那个）· CV-AC-53-D12 注明 Save 仍像今天一样持久化到后端
+
+**移动：** CV-AC-53-M1 导入操作在移动溢出菜单中 · CV-AC-53-M2 模态框和验证流程与桌面一致 · CV-AC-53-M3 文件上传适配移动文件选择器
+
+**通用：** CV-AC-53-G1 与 AI Generate（WorkflowGeneratorModal）分离 — 这是用于结构化 JSON 验证，不是自然语言 · CV-AC-53-G2 主要用例：在替换画布前验证外部生成或手工编辑的 JSON · CV-AC-53-G3 验证是客户端的（仅 workflow-ui，无新后端）· CV-AC-53-G4 Carbon 模态框模式匹配 v28 标准 · CV-AC-53-G5 存在验证错误时保存按钮禁用
+
 ---
 
 #### CV-US-50 — 规则键必须是单个 JSONPath 表达式
@@ -385,6 +407,7 @@ CV-AC-35-6 视觉验证：从 UAT 环境（https://workflow-ui-gamma.vercel.app/
 
 | 文档版本 | 日期 | 说明 | 涉及 US/AC |
 |----------|------|------|------------|
+| 2.25 | 2026-04-19 | TODO-hub-deploy-application-name — Hub ApplicationName 部署功能；三步顺序 API 调用（CreateApplicationName → UpdateApplicationName → SaveWorkflow）；五字段表单；三步进度指示器；绿色成功标识。TODO-canvas-import-workflow-json-validate-apply — 画布从 JSON 导入工作流；客户端验证；人类可读错误；预览摘要；确认替换；界面内说明 | APP-US-52 (新增), CV-US-53 (新增) |
 | 2.24 | 2026-04-19 | TODO-frontend-rebuild-from-design-handoff — 基于设计交付文件重建 workflow-ui；IBM Carbon Design System 完整实现；像素级还原设计规范；集成现有后端 API；Playwright E2E 测试覆盖所有用户流程；确保零功能回归 | CV-US-51 (新增) |
 | 2.23 | 2026-04-13 | TODO-node-editor-rule-key-json-path-validation — 规则键 JSONPath 验证；规则键字段失焦时验证；确保输入是单个有效 JSONPath 表达式；验证错误时禁用保存按钮；明确错误消息 | CV-US-50, CV-AC-50-1~6 |
 | 2.22 | 2026-04-13 | TODO-ui-ibm-carbon-audit-residual-styling — IBM Carbon 残留样式审计与修复；审计所有 UI 表面的 Carbon 合规性；修复命令式模态框（`Modal.confirm`）和门户组件（Dropdown、Tooltip、Popconfirm）的非 Carbon 样式；添加 Layer 5 断言和视觉基线以防止回归 | CV-US-49, CV-AC-49-1~7 |
