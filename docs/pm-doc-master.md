@@ -1,6 +1,6 @@
 # 产品需求主文档 — Workflow 平台（`pm-doc-master.md`）
 
-**文档版本：** 2.25  
+**文档版本：** 2.26  
 **更新日期：** 2026-04-19  
 **状态：** 草稿  
 
@@ -327,6 +327,14 @@ REC-AC-16-2 重试次数可追溯；用尽后终态明确。
 
 ---
 
+#### CV-US-54 — 导入验证与实际插件类型对齐
+
+> **作为** 工作流作者，**我希望** 导入工作流验证器接受系统实际存储的全部 6 种插件类型，**以便** 我可以成功导入之前导出的工作流而不会遇到误报的验证错误。
+
+**验收标准：** CV-AC-54-1 验证接受全部 6 种wire格式插件类型：`CONSUMER`、`CONSUMERWITHOUTERROR`、`IFELSE`、`MESSAGE`、`FUNCTION_V2`、`FUNCTION_V3` · CV-AC-54-2 验证逻辑与 `workFlowMapper.ts` 的 `pluginToBackendType()` 输出完全对齐 · CV-AC-54-3 验证错误消息显示正确的6种类型，不再显示 `HTTP_CALL` 或 `LOGIC` · CV-AC-54-4 UAT/回归测试应用须包含上述全部6种步骤各至少一步 · CV-AC-54-5 现有导入验证规则（必填字段、重复ID、边引用、规则键）无回归
+
+---
+
 #### CV-US-50 — 规则键必须是单个 JSONPath 表达式
 
 > **作为** 配置节点规则的工作流作者，**我希望** 系统验证每个规则键是单个有效的 JSONPath 表达式，**以便** 如果输入无效语法能立即得到反馈并避免运行时错误。
@@ -407,6 +415,7 @@ CV-AC-35-6 视觉验证：从 UAT 环境（https://workflow-ui-gamma.vercel.app/
 
 | 文档版本 | 日期 | 说明 | 涉及 US/AC |
 |----------|------|------|------------|
+| 2.26 | 2026-04-19 | TODO-import-plugin-types-match-api-mapper — 导入工作流插件类型验证对齐；修正 `ImportWorkflowModal` 验证逻辑以接受 6 种实际存储的插件类型（CONSUMER、CONSUMERWITHOUTERROR、IFELSE、MESSAGE、FUNCTION_V2、FUNCTION_V3）；移除错误的 UI 枚举名称（HTTP_CALL、LOGIC）；测试应用覆盖全部 6 种节点类型 | CV-US-54 (新增), CV-AC-54-1~5 |
 | 2.25 | 2026-04-19 | TODO-hub-deploy-application-name — Hub ApplicationName 部署功能；三步顺序 API 调用（CreateApplicationName → UpdateApplicationName → SaveWorkflow）；五字段表单；三步进度指示器；绿色成功标识。TODO-canvas-import-workflow-json-validate-apply — 画布从 JSON 导入工作流；客户端验证；人类可读错误；预览摘要；确认替换；界面内说明 | APP-US-52 (新增), CV-US-53 (新增) |
 | 2.24 | 2026-04-19 | TODO-frontend-rebuild-from-design-handoff — 基于设计交付文件重建 workflow-ui；IBM Carbon Design System 完整实现；像素级还原设计规范；集成现有后端 API；Playwright E2E 测试覆盖所有用户流程；确保零功能回归 | CV-US-51 (新增) |
 | 2.23 | 2026-04-13 | TODO-node-editor-rule-key-json-path-validation — 规则键 JSONPath 验证；规则键字段失焦时验证；确保输入是单个有效 JSONPath 表达式；验证错误时禁用保存按钮；明确错误消息 | CV-US-50, CV-AC-50-1~6 |
