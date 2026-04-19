@@ -1,7 +1,7 @@
 # 产品需求主文档 — Workflow 平台（`pm-doc-master.md`）
 
-**文档版本：** 2.23  
-**更新日期：** 2026-04-13  
+**文档版本：** 2.24  
+**更新日期：** 2026-04-19  
 **状态：** 草稿  
 
 **用途：** 单一产品基线。**文件名固定**为 `pm-doc-master.md`；仅 **文档版本** 与正文变更。本文 **全文为中文**；**不包含** HTTP 路径、方法、错误码、OpenAPI 等接口规格 —— 该类内容写在 **架构师文档** 中，与本产品说明书分离。
@@ -297,6 +297,14 @@ REC-AC-16-2 重试次数可追溯；用尽后终态明确。
 
 ---
 
+#### CV-US-51 — 前端重构（基于设计交付文件重建 workflow-ui）
+
+> **作为** 集成工程师，**我希望** 工作流平台界面基于设计交付文件的像素级还原实现，**以便** 获得一致、专业的 IBM Carbon Design System 体验，同时保持所有现有功能完整。
+
+**验收标准：** CV-AC-51-1 在 https://github.com/yiurenma/workflow-ui 创建新分支用于重建 · CV-AC-51-2 完整实现主页（英雄区 + 功能卡片）、应用列表（搜索/分页/CRUD）、画布（节点面板/拖放/连线）、记录列表（筛选/详情）四大界面 · CV-AC-51-3 IBM Plex Sans 正文字体、IBM Plex Mono 代码字体 · CV-AC-51-4 主色 #0f62fe，导航背景 #161616，所有组件 0px 圆角 · CV-AC-51-5 桌面 1280px 和移动 390×844 响应式 · CV-AC-51-6 保持与现有 operation-api 和 online-api 的 API 集成 · CV-AC-51-7 Playwright 测试覆盖所有用户流程（桌面 Chrome + 移动 Chrome） · CV-AC-51-8 现有 E2E 测试套件零回归 · CV-AC-51-9 WCAG 2.1 AA 无障碍合规
+
+---
+
 #### CV-US-50 — 规则键必须是单个 JSONPath 表达式
 
 > **作为** 配置节点规则的工作流作者，**我希望** 系统验证每个规则键是单个有效的 JSONPath 表达式，**以便** 如果输入无效语法能立即得到反馈并避免运行时错误。
@@ -377,6 +385,7 @@ CV-AC-35-6 视觉验证：从 UAT 环境（https://workflow-ui-gamma.vercel.app/
 
 | 文档版本 | 日期 | 说明 | 涉及 US/AC |
 |----------|------|------|------------|
+| 2.24 | 2026-04-19 | TODO-frontend-rebuild-from-design-handoff — 基于设计交付文件重建 workflow-ui；IBM Carbon Design System 完整实现；像素级还原设计规范；集成现有后端 API；Playwright E2E 测试覆盖所有用户流程；确保零功能回归 | CV-US-51 (新增) |
 | 2.23 | 2026-04-13 | TODO-node-editor-rule-key-json-path-validation — 规则键 JSONPath 验证；规则键字段失焦时验证；确保输入是单个有效 JSONPath 表达式；验证错误时禁用保存按钮；明确错误消息 | CV-US-50, CV-AC-50-1~6 |
 | 2.22 | 2026-04-13 | TODO-ui-ibm-carbon-audit-residual-styling — IBM Carbon 残留样式审计与修复；审计所有 UI 表面的 Carbon 合规性；修复命令式模态框（`Modal.confirm`）和门户组件（Dropdown、Tooltip、Popconfirm）的非 Carbon 样式；添加 Layer 5 断言和视觉基线以防止回归 | CV-US-49, CV-AC-49-1~7 |
 | 2.21 | 2026-04-13 | TODO-e2e-fix-test-failures-post-v30 — UAT PASS（105/106 通过）；修复 UAT 环境适配问题（oklch 颜色格式、移动端视口滚动、模态框尺寸断言、只读模式抽屉内容检查）；E2E 测试套件从 57.5% 提升至 99.1% 通过率 | CV-US-47, CV-AC-47-1~10 |

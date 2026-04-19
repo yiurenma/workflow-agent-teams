@@ -4,6 +4,8 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 ## Pending
 
+- [ ] **前端重构 — 基于设计交付文件重建 workflow-ui (HIGH)** *(label: `TODO-frontend-rebuild-from-design-handoff`)* — Rebuild the entire workflow-ui frontend project based on the design handoff bundle (`Workflow-handoff.zip`). The design is a complete IBM Carbon Design System implementation with React components, mock data, and full UI flows (Home, Applications, Canvas, Records). **Requirements:** (1) Create a new branch in https://github.com/yiurenma/workflow-ui; (2) Implement pixel-perfect recreation of the design file (`Workflow Studio.html` + `components.jsx`); (3) Integrate with existing backend APIs (operation-api, online-api); (4) Ensure all Playwright E2E tests pass to guarantee no functional regressions; (5) Maintain feature parity with current workflow-ui (workflow CRUD, canvas editor, node configuration, records view, AI Explain/Generate). **Design source:** `/tmp/Workflow-handoff/workflow/project/` — IBM Plex Sans/Mono fonts, #0f62fe primary blue, #161616 nav, zero border-radius, full responsive (desktop 1280px + mobile 390×844). **Playwright requirement:** Write/update E2E tests to cover all user flows before marking complete. **Label:** `TODO-frontend-rebuild-from-design-handoff`.
+
 - [ ] **端到端 — 节点编辑器抽屉关闭 (HIGH)** *(label: `TODO-uat-e2e-node-drawer-close-button-broken`)* — fix: node editor drawer close button not working
 
   **问题描述:** 点击关闭按钮时抽屉未关闭，用户被迫点击外部区域或按ESC键
