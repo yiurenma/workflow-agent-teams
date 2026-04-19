@@ -18,6 +18,8 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 - [x] **校验 — 移除导入校验中边引用必须存在的检查** *(label: `TODO-import-validation-remove-edge-reference-check`)* — ✅ **DONE** — UAT PASS 2026-04-19. Removed validation check requiring `uiMapList` edge references (source/target) to exist in `pluginList`. Allows importing workflows with string node IDs (e.g., `"HTTP_1"`), external workflow formats, or partial topologies. Other validations (plugin types, duplicate IDs, required fields) remain intact. QA: 6/6 PASS. E2E: 6/6 PASS. UAT: 6/6 PASS. Commits: `workflow-ui@09b80c2`. Docs: `pm-doc-v43.0.md`, `pm-doc-master.md` (v2.29), `arch-doc-v43.0.md`, `test-doc-v43.0.md`, `ui-test-report-v43.0.md`, `e2e-test-report-v43.0.md`, `uat-report-v43.0.md`. **Label:** `TODO-import-validation-remove-edge-reference-check`.
 
+- [ ] **部署 — 重写 `deploy`：点击后自动调 online API；执行名 vs 源应用；双块请求体；JSON 工作流 + AI Generate** *(label: `TODO-deploy-rewrite-online-api-workflow-json`)* — **Status:** Open (backlog / umbrella `docs/TODO.md` 已写详细英文规格). **要点:** (1) 用户点 **Deploy** 后客户端 **自动** 调用 **online API**。(2) **Query**：**用户输入的应用名** = **要执行的应用名**（runtime 执行所用名）。(3) **Body 两块缺一不可**：**A** = **原始应用名** 下要部署的 **源应用** 的全部信息（Hub 当前应用）；**B** = **工作流** 全部信息。(4) 部署过程用 **JSON 工作流** 表达，可借助 **AI Generate**；逻辑上覆盖现有三步（CreateApplicationName → UpdateApplicationName → SaveWorkflow）及 CORS/代理相关演进以 Arch 为准。**Label:** `TODO-deploy-rewrite-online-api-workflow-json`.
+
 - [ ] **端到端 — 节点编辑器抽屉关闭 (HIGH)** *(label: `TODO-uat-e2e-node-drawer-close-button-broken`)* — fix: node editor drawer close button not working
 
   **问题描述:** 点击关闭按钮时抽屉未关闭，用户被迫点击外部区域或按ESC键
