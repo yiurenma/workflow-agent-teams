@@ -18,11 +18,11 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 - [x] **校验 — 移除导入校验中边引用必须存在的检查** *(label: `TODO-import-validation-remove-edge-reference-check`)* — ✅ **DONE** — UAT PASS 2026-04-19. Removed validation check requiring `uiMapList` edge references (source/target) to exist in `pluginList`. Allows importing workflows with string node IDs (e.g., `"HTTP_1"`), external workflow formats, or partial topologies. Other validations (plugin types, duplicate IDs, required fields) remain intact. QA: 6/6 PASS. E2E: 6/6 PASS. UAT: 6/6 PASS. Commits: `workflow-ui@09b80c2`. Docs: `pm-doc-v43.0.md`, `pm-doc-master.md` (v2.29), `arch-doc-v43.0.md`, `test-doc-v43.0.md`, `ui-test-report-v43.0.md`, `e2e-test-report-v43.0.md`, `uat-report-v43.0.md`. **Label:** `TODO-import-validation-remove-edge-reference-check`.
 
-- [ ] **E2E 测试 — IBM Carbon 重写后测试选择器更新 (HIGH)** *(label: `TODO-e2e-carbon-rewrite-selector-updates`)* — **Status:** Open. **问题:** IBM Carbon 重写后，81/90 E2E 测试失败。测试仍在查找 Ant Design 类名（`.ant-pagination`、`.ant-modal`、`.ant-drawer`）。**影响范围:** Canvas import (15 tests), Node editor (8 tests), JsonPath (4 tests), AI Generator (1 test), Applications list (7 tests), Drawer close (6 tests), Explain (1 test), Records (1 test)。**修复方案:** 更新测试选择器匹配 Carbon Design System 组件类名。需要检查实际 UI 确定正确的 Carbon 类名（如 `.cds--modal`、`.cds--pagination` 等）。**详细报告:** `docs/e2e-test-report-v44.0.md`。**Label:** `TODO-e2e-carbon-rewrite-selector-updates`.
+- [x] **E2E 测试 — IBM Carbon 重写后测试选择器更新 (HIGH)** *(label: `TODO-e2e-carbon-rewrite-selector-updates`)* — **Status:** Open. **问题:** IBM Carbon 重写后，81/90 E2E 测试失败。测试仍在查找 Ant Design 类名（`.ant-pagination`、`.ant-modal`、`.ant-drawer`）。**影响范围:** Canvas import (15 tests), Node editor (8 tests), JsonPath (4 tests), AI Generator (1 test), Applications list (7 tests), Drawer close (6 tests), Explain (1 test), Records (1 test)。**修复方案:** 更新测试选择器匹配 Carbon Design System 组件类名。需要检查实际 UI 确定正确的 Carbon 类名（如 `.cds--modal`、`.cds--pagination` 等）。**详细报告:** `docs/e2e-test-report-v44.0.md`。**Label:** `TODO-e2e-carbon-rewrite-selector-updates`.
 
-- [ ] **部署 — 重写 `deploy`：点击后自动调 online API；执行名 vs 源应用；双块请求体；JSON 工作流 + AI Generate** *(label: `TODO-deploy-rewrite-online-api-workflow-json`)* — **Status:** Open (backlog / umbrella `docs/TODO.md` 已写详细英文规格). **要点:** (1) 用户点 **Deploy** 后客户端 **自动** 调用 **online API**。(2) **Query**：**用户输入的应用名** = **要执行的应用名**（runtime 执行所用名）。(3) **Body 两块缺一不可**：**A** = **原始应用名** 下要部署的 **源应用** 的全部信息（Hub 当前应用）；**B** = **工作流** 全部信息。(4) 部署过程用 **JSON 工作流** 表达，可借助 **AI Generate**；逻辑上覆盖现有三步（CreateApplicationName → UpdateApplicationName → SaveWorkflow）及 CORS/代理相关演进以 Arch 为准。**Label:** `TODO-deploy-rewrite-online-api-workflow-json`.
+- [ ] **部署 — 重写 `deploy`：点击后自动调 online API；执行名 vs 源应用；双块请求体；JSON 工作流 + AI Generate** *(label: `TODO-deploy-rewrite-online-api-workflow-json`)* — **Status:** Open (backlog / umbrella `docs/TODO.md` 已写详细英文规格). **要点:** (1) 用户点 **Deploy** 后客户端 **自动** 调用 **online API**。(2) **Query**：**用户输入的应用名** = **要执行的应用名**（runtime 执行所用名）。(3) **Body 两块缺一不可**：**A** = **原始应用名** 下要部署的 **源应用** 的全部信息（Hub 当前应用）；**B** = **工作流** 全部信息。(4) 部署过程用 **JSON 工作流** 表达，可借助 **AI Generate**；逻辑上覆盖现有三步（CreateApplicationName → UpdateApplicationName → SaveWorkflow），这个TODO只需要动UI的componnt，API的request body组装全部用API去获取，后续Deploy的工作流不需要在这里做，会有另外的task帮忙做。**Label:** `TODO-deploy-rewrite-online-api-workflow-json`.
 
-- [ ] **端到端 — 节点编辑器抽屉关闭 (HIGH)** *(label: `TODO-uat-e2e-node-drawer-close-button-broken`)* — fix: node editor drawer close button not working
+- [x] **端到端 — 节点编辑器抽屉关闭 (HIGH)** *(label: `TODO-uat-e2e-node-drawer-close-button-broken`)* — fix: node editor drawer close button not working
 
   **问题描述:** 点击关闭按钮时抽屉未关闭，用户被迫点击外部区域或按ESC键
 
@@ -39,33 +39,33 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
   **标签:** `TODO-uat-e2e-node-drawer-close-button-broken`
 
-- [ ] **端到端 — 五层验证改造** *(label: `TODO-uat-e2e-retrofit-5layer-validation`)* ✅ **DONE...**
+- [x] **端到端 — 五层验证改造** *(label: `TODO-uat-e2e-retrofit-5layer-validation`)* ✅ **DONE...**
 
-- [ ] **UI一致性 — IBM Carbon 剩余样式 + Playwright blind spots** *(label: `TODO-ui-ibm-carbon-audi...**
+- [x] **UI一致性 — IBM Carbon 剩余样式 + Playwright blind spots** *(label: `TODO-ui-ibm-carbon-audi...**
 
-- [ ] **节点编辑器 — 规则键必须是单个JSON路径** *(label: `TODO-node-editor-rule-key-json-path-validati...**
+- [x] **节点编辑器 — 规则键必须是单个JSON路径** *(label: `TODO-node-editor-rule-key-json-path-validati...**
 
-- [ ] **节点编辑器 — 宽度、先读后写模式、编辑门、长内容** *(label: `TODO-node-editor-draggable...**
+- [x] **节点编辑器 — 宽度、先读后写模式、编辑门、长内容** *(label: `TODO-node-editor-draggable...**
 
-- [ ] **端到端 — 修复完整套件运行的测试失败 (44 failures)** *(label: `TODO-e2e-fix-test-failures-pos...**
+- [x] **端到端 — 修复完整套件运行的测试失败 (44 failures)** *(label: `TODO-e2e-fix-test-failures-pos...**
 
-- [ ] **品牌 — 蜗牛图标 (browser tab)** *(label: `TODO-branding-favicon-snail-tab-icon`)* ✅ **DONE ...**
+- [x] **品牌 — 蜗牛图标 (browser tab)** *(label: `TODO-branding-favicon-snail-tab-icon`)* ✅ **DONE ...**
 
-- [ ] **UI/UX — 搜索框可用性问题** *(label: `TODO-ui-ux-search-box-usability`)***
+- [x] **UI/UX — 搜索框可用性问题** *(label: `TODO-ui-ux-search-box-usability`)***
 
-- [ ] **UI/UX — 红色按钮缺少文本标签** *(label: `TODO-ui-ux-red-buttons-no-labels`)***
+- [x] **UI/UX — 红色按钮缺少文本标签** *(label: `TODO-ui-ux-red-buttons-no-labels`)***
 
-- [ ] **UI/UX — 设置按钮不稳定** *(label: `TODO-ui-ux-settings-button-unstable`)***
+- [x] **UI/UX — 设置按钮不稳定** *(label: `TODO-ui-ux-settings-button-unstable`)***
 
-- [ ] **UI/UX — 移动端抽屉滚动边界溢出** *(label: `TODO-ui-ux-mobile-drawer-scroll-bounds-over...**
+- [x] **UI/UX — 移动端抽屉滚动边界溢出** *(label: `TODO-ui-ux-mobile-drawer-scroll-bounds-over...**
 
-- [ ] **画布 — 复制和删除选定节点** *(label: `TODO-canvas-node-copy-full-config-delete`)***
+- [x] **画布 — 复制和删除选定节点** *(label: `TODO-canvas-node-copy-full-config-delete`)***
 
-- [ ] **AI — 工作流生成器语义质量** *(label: `TODO-canvas-ai-workflow-generator-quality-promp...**
+- [x] **AI — 工作流生成器语义质量** *(label: `TODO-canvas-ai-workflow-generator-quality-promp...**
 
-- [ ] **首页 — 工作流工作室介绍** *(label: `TODO-home-workflow-studio-intro-copy`)***
+- [x] **首页 — 工作流工作室介绍** *(label: `TODO-home-workflow-studio-intro-copy`)***
 
-- [ ] **品牌 — 蜗牛图标 (browser tab)** *(label: `TODO-branding-favicon-snail-tab-icon`)***
+- [x] **品牌 — 蜗牛图标 (browser tab)** *(label: `TODO-branding-favicon-snail-tab-icon`)***
 
 - [x] **画布 — 从JSON导入工作流 (toolbar; validate then apply)** *(label: `TODO-canvas-import-workflow-json-validate-apply`)* — ✅ **DONE** — UAT PASS 2026-04-19. ImportWorkflowModal component with client-side JSON validation. Strips markdown code fences automatically. Human-readable error messages with path hints (e.g., “pluginList[2].action.type: Invalid plugin type”). Preview summary shows node count, edge count, warnings. Confirmation prompt for non-empty canvas. Import button added to canvas toolbar (desktop) and overflow menu (mobile). Validates plugin types (FUNCTION_V2, FUNCTION_V3, HTTP_CALL, LOGIC), duplicate IDs, edge references. E2E tests: 8/8 passed (TC-IMPORT-01 through TC-IMPORT-08, 1 flaky on modal close timing). Commits: workflow-ui@a70562b. Docs: `pm-doc-v38.0.md`, `arch-doc-v38.0.md`, `test-doc-v38.0.md`, `ui-test-report-v38.0.md`, `e2e-test-report-v38.0.md`. **Label:** `TODO-canvas-import-workflow-json-validate-apply`.
 
