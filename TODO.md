@@ -24,6 +24,8 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 - [ ] **online-api — POST 可选 SSE：每步完成后将 DB 中已保存的 Runtime（事件）数据推送给前端** *(label: `TODO-online-api-post-optional-sse-runtime-per-step`)* — **Status:** Open. **目标:** 在 **workflow-online-api** 的相应 **POST** 执行路径上，支持通过 **请求头** 声明「使用 SSE 流式返回」（具体头名与取值约定由后续 Arch 文档定义，可为自定义字符串头）。**有该头：** 响应为 **SSE**，在 **每个执行步骤完成** 且 **Runtime / 事件数据已写入 DB** 后，将 **当前可从 DB 读取的对应 Runtime 数据** 作为事件推送给前端。**无该头：** 行为与现网 **完全一致**（普通单次 HTTP 响应），不得改变默认契约。**非功能要求（硬约束）:** 新增路径必须为 **opt-in**；默认客户端与集成 **不受影响**；需回归验证无头请求与现有前端/调用方行为不变。**范围:** `workflow-online-api`（必要时 Arch 中说明与前端消费方式的衔接）。**Label:** `TODO-online-api-post-optional-sse-runtime-per-step`.
 
+- [ ] **画布 — Test：请求体执行后以 SSE 逐步展示每步 API 响应（JSON）+ 大体量 UI/性能** *(label: `TODO-canvas-test-sse-per-step-response-ui-performance`)* — **Status:** Open. **场景:** 画布上 **Test** 能力：用户填入 **request body** 并执行对应 **online API**（或与现有一致的测试调用路径，以 Arch 为准）。**期望:** 调用时使用 **SSE**（依赖或与 `TODO-online-api-post-optional-sse-runtime-per-step` 对齐），**每完成一步** 后端推送该步对应响应数据，**UI 即时追加展示**（第一步完成见第一步响应，后续同理），内容以 **JSON** 为主。**体量与交互:** 累计数据可能 **很大**，需在 Arch/UI 中设计展示方式（例如每步 **折叠 / 点击展开** 才渲染完整 JSON、步骤列表 + 详情面板、仅高亮变更字段等），并评估 **大 JSON** 下避免 **主线程卡顿**（虚拟列表、延迟解析/语法高亮、Web Worker、`JSON.stringify` 节流、限制同时展开的块数、下载为文件等）。**范围:** 主要 `workflow-ui` + 与 online-api SSE 契约衔接；**不改变** 未启用 SSE/测试流式时的现有 Test 行为（与后端 opt-in 一致）。**Label:** `TODO-canvas-test-sse-per-step-response-ui-performance`.
+
 - [x] **端到端 — 节点编辑器抽屉关闭 (HIGH)** *(label: `TODO-uat-e2e-node-drawer-close-button-broken`)* — fix: node editor drawer close button not working
 
   **问题描述:** 点击关闭按钮时抽屉未关闭，用户被迫点击外部区域或按ESC键
