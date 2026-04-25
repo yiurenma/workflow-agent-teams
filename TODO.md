@@ -22,6 +22,8 @@ Backlog for agent teams to pick up in order. Check items off as they ship.
 
 - [ ] **部署 — 重写 `deploy`：点击后自动调 online API；执行名 vs 源应用；双块请求体；JSON 工作流 + AI Generate** *(label: `TODO-deploy-rewrite-online-api-workflow-json`)* — **Status:** Open (backlog / umbrella `docs/TODO.md` 已写详细英文规格). **要点:** (1) 用户点 **Deploy** 后客户端 **自动** 调用 **online API**。(2) **Query**：**用户输入的应用名** = **要执行的应用名**（runtime 执行所用名）。(3) **Body 两块缺一不可**：**A** = **原始应用名** 下要部署的 **源应用** 的全部信息（Hub 当前应用）；**B** = **工作流** 全部信息。(4) 部署过程用 **JSON 工作流** 表达，可借助 **AI Generate**；逻辑上覆盖现有三步（CreateApplicationName → UpdateApplicationName → SaveWorkflow），这个TODO只需要动UI的componnt，API的request body组装全部用API去获取，后续Deploy的工作流不需要在这里做，会有另外的task帮忙做。**Label:** `TODO-deploy-rewrite-online-api-workflow-json`.
 
+- [ ] **online-api — POST 可选 SSE：每步完成后将 DB 中已保存的 Runtime（事件）数据推送给前端** *(label: `TODO-online-api-post-optional-sse-runtime-per-step`)* — **Status:** Open. **目标:** 在 **workflow-online-api** 的相应 **POST** 执行路径上，支持通过 **请求头** 声明「使用 SSE 流式返回」（具体头名与取值约定由后续 Arch 文档定义，可为自定义字符串头）。**有该头：** 响应为 **SSE**，在 **每个执行步骤完成** 且 **Runtime / 事件数据已写入 DB** 后，将 **当前可从 DB 读取的对应 Runtime 数据** 作为事件推送给前端。**无该头：** 行为与现网 **完全一致**（普通单次 HTTP 响应），不得改变默认契约。**非功能要求（硬约束）:** 新增路径必须为 **opt-in**；默认客户端与集成 **不受影响**；需回归验证无头请求与现有前端/调用方行为不变。**范围:** `workflow-online-api`（必要时 Arch 中说明与前端消费方式的衔接）。**Label:** `TODO-online-api-post-optional-sse-runtime-per-step`.
+
 - [x] **端到端 — 节点编辑器抽屉关闭 (HIGH)** *(label: `TODO-uat-e2e-node-drawer-close-button-broken`)* — fix: node editor drawer close button not working
 
   **问题描述:** 点击关闭按钮时抽屉未关闭，用户被迫点击外部区域或按ESC键
